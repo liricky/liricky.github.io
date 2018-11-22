@@ -1090,7 +1090,7 @@ pre .javascript .function {
   bottom: 30px;
 }
 .header {
-  background: url("https://github.com/liricky/liricky.github.io/uploads/pic_head.ico");
+  background: transparent;
 }
 .header-inner {
   position: relative;
@@ -1833,7 +1833,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #11d0cd;
+  background: #17ff17;
 }
 .links-of-blogroll {
   font-size: 13px;
