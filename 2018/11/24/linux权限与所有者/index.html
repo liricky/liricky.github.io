@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="linux问题,">
 
 
 
@@ -79,14 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="linux权限与文件所有者的问题">
+<meta name="keywords" content="linux问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux权限与所有者">
+<meta property="og:url" content="http://yoursite.com/2018/11/24/linux权限与所有者/index.html">
 <meta property="og:site_name" content="A Little Noob">
+<meta property="og:description" content="linux权限与文件所有者的问题">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-22T08:10:47.769Z">
+<meta property="og:updated_time" content="2018-11-24T08:39:35.744Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
+<meta name="twitter:title" content="linux权限与所有者">
+<meta name="twitter:description" content="linux权限与文件所有者的问题">
 
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/">
+  <link rel="canonical" href="http://yoursite.com/2018/11/24/linux权限与所有者/">
 
 
 
 
 
-  <title>tags | A Little Noob</title>
+  <title>linux权限与所有者 | A Little Noob</title>
   
 
 
@@ -247,40 +251,200 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/linux权限与所有者/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ricky Li">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/pic_head.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="A Little Noob">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 2 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Hexo/" style="font-size: 12px; color: #ccc">Hexo</a> <a href="/tags/linux问题/" style="font-size: 12px; color: #ccc">linux问题</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">linux权限与所有者</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-24T16:19:59+08:00">
+                2018-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="linux权限与文件所有者的问题"><a href="#linux权限与文件所有者的问题" class="headerlink" title="linux权限与文件所有者的问题"></a>linux权限与文件所有者的问题</h1><a id="more"></a>
+<h2 id="linux权限"><a href="#linux权限" class="headerlink" title="linux权限"></a>linux权限</h2><p>改变linux档案的权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod [-cfvR] [--help] [--version] mode file...</span><br><span class="line"></span><br><span class="line">chmod [-cfvR] XXX file</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>r 表示可读取=4，w 表示可写入=2，x 表示可执行=1；第一位表示该文件的拥有者，第二位表示与该文件的拥有者属于同一个群体者，第三位表示其他以外的人。</p>
+</li>
+<li><p>-c : 若该档案权限确实已经更改，才显示其更改动作</p>
+</li>
+<li><p>-f : 若该档案权限无法被更改也不要显示错误讯息</p>
+</li>
+<li><p>-v : 显示权限变更的详细资料</p>
+</li>
+<li><p>-R : 对目前目录下的所有档案与子目录进行相同的权限变更(即以递回的方式逐个变更) </p>
+</li>
+</ul>
+<p><a href="http://www.runoob.com/linux/linux-comm-chmod.html" target="_blank" rel="noopener">详细解析</a></p>
+<h2 id="改变文件所有者"><a href="#改变文件所有者" class="headerlink" title="改变文件所有者"></a>改变文件所有者</h2><p>这个是因为之前在搭建博客的时候权限不够，没有用sudo方式而是直接进了root执行，所以导致后来在执行新建文章等命令的时候，全部都必须在root用户下才能操作，最后是通过改变了整个本地博客目录的所有者解决的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown [-cfhvR] [--help] [--version] user[:group] file...</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>user : 新的文件拥有者的使用者 ID</p>
+</li>
+<li><p>group : 新的文件拥有者的使用者组(group)</p>
+</li>
+<li><p>-c : 显示更改的部分的信息</p>
+</li>
+<li><p>-f : 忽略错误信息</p>
+</li>
+<li><p>-h :修复符号链接</p>
+</li>
+<li><p>-v : 显示详细的处理信息</p>
+</li>
+<li><p>-R : 处理指定目录以及其子目录下的所有文件</p>
+</li>
+</ul>
+<p><a href="http://www.runoob.com/linux/linux-comm-chown.html" target="_blank" rel="noopener">详细解析</a></p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux问题/" rel="tag"># linux问题</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/23/Hexo搭建博客/" rel="next" title="Hexo搭建博客">
+                <i class="fa fa-chevron-left"></i> Hexo搭建博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -313,8 +477,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -386,6 +559,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux权限与文件所有者的问题"><span class="nav-number">1.</span> <span class="nav-text">linux权限与文件所有者的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux权限"><span class="nav-number">1.1.</span> <span class="nav-text">linux权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改变文件所有者"><span class="nav-number">1.2.</span> <span class="nav-text">改变文件所有者</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
