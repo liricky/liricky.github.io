@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="操作系统,">
 
 
 
@@ -79,13 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="A Little Noob">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="操作系统">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统2">
+<meta property="og:url" content="http://yoursite.com/2018/12/04/操作系统2/index.html">
 <meta property="og:site_name" content="A Little Noob">
+<meta property="og:description" content="操作系统">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-04T14:39:57.961Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="A Little Noob">
+<meta name="twitter:title" content="操作系统2">
+<meta name="twitter:description" content="操作系统">
 
 
 
@@ -115,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/04/操作系统2/">
 
 
 
 
 
-  <title>A Little Noob</title>
+  <title>操作系统2 | A Little Noob</title>
   
 
 
@@ -140,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -244,9 +248,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -276,9 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/04/操作系统2/" itemprop="url">操作系统2</a></h1>
+          <h1 class="post-title" itemprop="name headline">操作系统2</h1>
         
 
         <div class="post-meta">
@@ -350,308 +352,110 @@
       
 
       
-        
-          <p><center>操作系统</center><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/12/04/操作系统2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
+        <p><center>操作系统</center><br><a id="more"></a></p>
+<h1 id="第四章-存储器管理"><a href="#第四章-存储器管理" class="headerlink" title="第四章 存储器管理"></a>第四章 存储器管理</h1><h2 id="存储器管理功能"><a href="#存储器管理功能" class="headerlink" title="存储器管理功能"></a>存储器管理功能</h2><ul>
+<li><p>内存分配</p>
+</li>
+<li><p>内存保护</p>
+</li>
+<li><p>地址映射</p>
+</li>
+<li><p>内存扩充</p>
+</li>
+</ul>
+<h2 id="存储器的层次结构"><a href="#存储器的层次结构" class="headerlink" title="存储器的层次结构"></a>存储器的层次结构</h2><h3 id="多层结构的存储器系统"><a href="#多层结构的存储器系统" class="headerlink" title="多层结构的存储器系统"></a>多层结构的存储器系统</h3><ul>
+<li><p>寄存器</p>
+</li>
+<li><p>高速缓存</p>
+</li>
+<li><p>主存储器</p>
+</li>
+<li><p>磁盘缓存</p>
+</li>
+<li><p>固定磁盘</p>
+</li>
+<li><p>可移动存储介质</p>
+</li>
+</ul>
+<p>1：CPU寄存器</p>
+<p>2-4：主存</p>
+<p>1-4：可执行存储器（寄存器和主存储器）</p>
+<p>以上几层属于操作系统存储管理的管辖范畴，掉电后它们中存储的信息不再存在。</p>
+<p>5-6：辅存（通过I/O设备实现）</p>
+<p>低层属于设备管理的管辖范畴，它们存储的信息将被长期保存。</p>
+<h3 id="主存储器与寄存器"><a href="#主存储器与寄存器" class="headerlink" title="主存储器与寄存器"></a>主存储器与寄存器</h3><p>寄存器具有与处理剂相同的速度，而主存储器访问速度远低于CPU执行指令的速度</p>
+<h3 id="高速缓存和磁盘缓存"><a href="#高速缓存和磁盘缓存" class="headerlink" title="高速缓存和磁盘缓存"></a>高速缓存和磁盘缓存</h3><ul>
+<li><p>高速缓存   硬件设备，是实体</p>
+</li>
+<li><p>磁盘缓存   不是一种实际存在的设备，利用主存中的部分存储空间暂时存放从磁盘中读出（或写入）的信息</p>
+</li>
+</ul>
+<h2 id="程序的装入和链接"><a href="#程序的装入和链接" class="headerlink" title="程序的装入和链接"></a>程序的装入和链接</h2><ul>
+<li><p>编译</p>
+</li>
+<li><p>链接</p>
+</li>
+<li><p>装入</p>
+</li>
+</ul>
+<h3 id="程序的装入方式"><a href="#程序的装入方式" class="headerlink" title="程序的装入方式"></a>程序的装入方式</h3><ul>
+<li><p>绝对装入方式</p>
+</li>
+<li><p>可重定位装入方式    静态重定位   装入时做映射</p>
+</li>
+<li><p>动态运行时的装入方式    装入内存后的所有地址都仍是逻辑地址，这种方式需要一个重定位寄存器的支持（硬件支持）  执行时做映射</p>
+</li>
+</ul>
+<h3 id="程序的链接"><a href="#程序的链接" class="headerlink" title="程序的链接"></a>程序的链接</h3><ul>
+<li><p>静态链接方式</p>
+</li>
+<li><p>装入时动态链接</p>
+</li>
+<li><p>运行时动态链接</p>
+</li>
+</ul>
+<h2 id="连续分配存储管理方式"><a href="#连续分配存储管理方式" class="headerlink" title="连续分配存储管理方式"></a>连续分配存储管理方式</h2><p>程序中代码或数据的逻辑地址相邻，体现在内存空间分配时物理地址的相邻。</p>
+<h3 id="单一连续分配"><a href="#单一连续分配" class="headerlink" title="单一连续分配"></a>单一连续分配</h3><h3 id="固定分区分配"><a href="#固定分区分配" class="headerlink" title="固定分区分配"></a>固定分区分配</h3><p>将整个用户空间划分为若干个固定大小的区域</p>
+<p>由于分区数固定，限制了并发数</p>
+<h4 id="划分分区的方法"><a href="#划分分区的方法" class="headerlink" title="划分分区的方法"></a>划分分区的方法</h4><ul>
+<li><p>分区大小相等</p>
+</li>
+<li><p>分区大小不等</p>
+</li>
+</ul>
+<h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><p><strong>关于内碎片与外碎片：</strong></p>
+<p>在内存管理中，内部碎片是已经被分配出去的的内存空间大于请求所需的内存空间。</p>
+<p>外部碎片是指还没有分配出去，但是由于大小太小而无法分配给申请空间的新进程的内存空间空闲块。</p>
+<p>固定分区存在内部碎片，可变式分区分配会存在外部碎片。</p>
+<p><a href="https://blog.csdn.net/haiross/article/details/38704945" target="_blank" rel="noopener">解析</a></p>
+<h4 id="存储保护"><a href="#存储保护" class="headerlink" title="存储保护"></a>存储保护</h4><p>界地址寄存器</p>
+<h3 id="动态分区分配"><a href="#动态分区分配" class="headerlink" title="动态分区分配"></a>动态分区分配</h3><h4 id="基于顺序搜索的动态分区分配算法"><a href="#基于顺序搜索的动态分区分配算法" class="headerlink" title="基于顺序搜索的动态分区分配算法"></a>基于顺序搜索的动态分区分配算法</h4><ul>
+<li><p>首次适应算法（FF）</p>
+</li>
+<li><p>循环首次适应算法（NF）</p>
+</li>
+<li><p>最佳适应算法（BF）</p>
+</li>
+<li><p>最坏适应算法（WF）</p>
+</li>
+</ul>
+<h4 id="基于索引搜索的动态分区分配算法（不涉及计算）"><a href="#基于索引搜索的动态分区分配算法（不涉及计算）" class="headerlink" title="基于索引搜索的动态分区分配算法（不涉及计算）"></a>基于索引搜索的动态分区分配算法（不涉及计算）</h4><ul>
+<li><p>快速适应算法</p>
+</li>
+<li><p><strong>伙伴系统</strong></p>
+</li>
+<li><p>哈希算法</p>
+</li>
+</ul>
+<h3 id="动态可重定位分区分配"><a href="#动态可重定位分区分配" class="headerlink" title="动态可重定位分区分配"></a>动态可重定位分区分配</h3><ul>
+<li><p>紧凑</p>
+</li>
+<li><p>动态重定位：重定位寄存器</p>
+</li>
+<li><p>动态重定位分区分配算法：增加了紧凑的功能</p>
+</li>
+</ul>
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/有关git/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ricky Li">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/pic_head.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A Little Noob">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/24/有关git/" itemprop="url">有关git</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-24T16:40:53+08:00">
-                2018-11-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h1><p><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">教程</a><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/24/有关git/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/linux权限与所有者/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ricky Li">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/pic_head.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A Little Noob">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/24/linux权限与所有者/" itemprop="url">linux权限与所有者</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-24T16:19:59+08:00">
-                2018-11-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="linux权限与文件所有者的问题"><a href="#linux权限与文件所有者的问题" class="headerlink" title="linux权限与文件所有者的问题"></a>linux权限与文件所有者的问题</h1>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/24/linux权限与所有者/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
       
     </div>
     
@@ -666,14 +470,36 @@
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          
+        </div>
       
 
       
+      
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/24/有关git/" rel="next" title="有关git">
+                <i class="fa fa-chevron-left"></i> 有关git
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </div>
@@ -683,156 +509,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/23/Hexo搭建博客/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ricky Li">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/pic_head.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A Little Noob">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/23/Hexo搭建博客/" itemprop="url">Hexo搭建博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-23T17:12:38+08:00">
-                2018-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Hexo与Markdown"><a href="#Hexo与Markdown" class="headerlink" title="Hexo与Markdown"></a>Hexo与Markdown</h1>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/23/Hexo搭建博客/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -840,6 +521,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -860,8 +545,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -933,6 +627,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第四章-存储器管理"><span class="nav-number">1.</span> <span class="nav-text">第四章 存储器管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#存储器管理功能"><span class="nav-number">1.1.</span> <span class="nav-text">存储器管理功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储器的层次结构"><span class="nav-number">1.2.</span> <span class="nav-text">存储器的层次结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多层结构的存储器系统"><span class="nav-number">1.2.1.</span> <span class="nav-text">多层结构的存储器系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主存储器与寄存器"><span class="nav-number">1.2.2.</span> <span class="nav-text">主存储器与寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高速缓存和磁盘缓存"><span class="nav-number">1.2.3.</span> <span class="nav-text">高速缓存和磁盘缓存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序的装入和链接"><span class="nav-number">1.3.</span> <span class="nav-text">程序的装入和链接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序的装入方式"><span class="nav-number">1.3.1.</span> <span class="nav-text">程序的装入方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序的链接"><span class="nav-number">1.3.2.</span> <span class="nav-text">程序的链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连续分配存储管理方式"><span class="nav-number">1.4.</span> <span class="nav-text">连续分配存储管理方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单一连续分配"><span class="nav-number">1.4.1.</span> <span class="nav-text">单一连续分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#固定分区分配"><span class="nav-number">1.4.2.</span> <span class="nav-text">固定分区分配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#划分分区的方法"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">划分分区的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">内存分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储保护"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">存储保护</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态分区分配"><span class="nav-number">1.4.3.</span> <span class="nav-text">动态分区分配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于顺序搜索的动态分区分配算法"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">基于顺序搜索的动态分区分配算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于索引搜索的动态分区分配算法（不涉及计算）"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">基于索引搜索的动态分区分配算法（不涉及计算）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态可重定位分区分配"><span class="nav-number">1.4.4.</span> <span class="nav-text">动态可重定位分区分配</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1080,6 +790,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
