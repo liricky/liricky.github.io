@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="A Little Noob">
 <meta property="og:description" content="LeetCode的菜鸡实录">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-31T09:10:36.744Z">
+<meta property="og:updated_time" content="2019-04-01T10:46:20.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode菜鸡之路">
 <meta name="twitter:description" content="LeetCode的菜鸡实录">
@@ -385,6 +385,15 @@
 </ul>
 <p>这里使用unordered_map、字符串还有unordered_set都可以。核心思想是相同的，unordered_set思路更为明显。</p>
 <p><strong>延伸：<a href="https://blog.csdn.net/mdjxy63/article/details/80056700" target="_blank" rel="noopener">unordered_set</a></strong></p>
+<h2 id="4、寻找两个有序数组的中位数"><a href="#4、寻找两个有序数组的中位数" class="headerlink" title="4、寻找两个有序数组的中位数"></a>4、寻找两个有序数组的中位数</h2><p><strong>重点：思路+边界分析</strong></p>
+<p>第一道困难就被锤到自闭…</p>
+<p>其实大概的思路是想到了，可做，但是还是脑筋太死，其实变通一下可能完整思路就有了。当然了，对着例程都错了半天，真的是把以前的东西都还光了。</p>
+<p>题目和之前算法课上面的等长串求中位数有些类似，因为是有序的，所以肯定是在某点进行分割，只是不等长的情况下需要稍微进行一些修改。</p>
+<p><a href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/" target="_blank" rel="noopener">题解超长</a></p>
+<p>用自己的语言来解释下：</p>
+<p>中位数肯定是能够使两个数组总的个数长度左右平分的，所以相当于是在两个数组之间有分隔线把左右的内容隔开。这里为了保证之后进行判断的时候可以不用讨论多种情况，所以上来第一步就是把两个数组的个数多少确定了下来，个数少的为nums1，多的为nums2。这里特别注意，<strong>交换完之后把数组的长度也要换</strong>，智障如我对着样例改的时候死活不对，就是忘了交换两个数组的长度。由于在两个数组中的分割线实际上是有关联的。为了保证大于和小于的个数相同，nums1中的分割线发生了移动，相应的nums2中的分割线也要发生变动。这里使选择较小的那个作为自变量，多的数组作为因变量。（关于在较小的数组端点也是有可能的特殊情况）在分割线的左右之间是具有关联的，这里的关联是指不同的数组之间有着大小关系（同数组之间有序肯定是有关系的），通过这样的限制条件来进行分割线的移动。</p>
+<p>这道题目等过一段时间可以重做一遍，到时候应该会重新理解一下，然后再解释一遍，现在只是理解了大概的思想，但是在具体的问题中还是存在很多问题，比如对于边界问题限制的理解。</p>
+<p><strong>延伸：中位数</strong></p>
 
       
     </div>
@@ -567,7 +576,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode的菜鸡实录"><span class="nav-number">1.</span> <span class="nav-text">LeetCode的菜鸡实录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、两数之和"><span class="nav-number">1.1.</span> <span class="nav-text">1、两数之和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">2、两数相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、无重复字符的最长子串"><span class="nav-number">1.3.</span> <span class="nav-text">3、无重复字符的最长子串</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode的菜鸡实录"><span class="nav-number">1.</span> <span class="nav-text">LeetCode的菜鸡实录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、两数之和"><span class="nav-number">1.1.</span> <span class="nav-text">1、两数之和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">2、两数相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、无重复字符的最长子串"><span class="nav-number">1.3.</span> <span class="nav-text">3、无重复字符的最长子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、寻找两个有序数组的中位数"><span class="nav-number">1.4.</span> <span class="nav-text">4、寻找两个有序数组的中位数</span></a></li></ol></li></ol></div>
             
 
           </div>
