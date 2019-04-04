@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="A Little Noob">
 <meta property="og:description" content="LeetCode的菜鸡实录">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-02T11:11:01.851Z">
+<meta property="og:updated_time" content="2019-04-04T15:36:23.073Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode菜鸡之路">
 <meta name="twitter:description" content="LeetCode的菜鸡实录">
@@ -412,6 +412,26 @@
 <p><a href="https://segmentfault.com/a/1190000008484167?utm_source=tag-newest" target="_blank" rel="noopener">讲解1</a>    <a href="https://www.jianshu.com/p/116aa58b7d81" target="_blank" rel="noopener">讲解2</a></p>
 <p>动态规划是肯定需要掌握的。在思考的时候其实没太往这方面去想，不过这个思想肯定还是要有的。<a href="https://leetcode-cn.com/problems/longest-palindromic-substring/solution/" target="_blank" rel="noopener">题解</a>中的方法三</p>
 <p>看题解的时候，动态方程基本能理解，不过由于不是自己列的，所以还是需要等以后做到用动态规划的题目时再判断是否掌握。</p>
+<h2 id="6、Z字型变换"><a href="#6、Z字型变换" class="headerlink" title="6、Z字型变换"></a>6、Z字型变换</h2><p>这题…做出来了，但是问题是这复杂度做炸了，其实看了题解之后发现思路没问题啊，就是手法用的不对，真是要死…</p>
+<p><strong><em>讲道理，我写的代码真是又臭又长…除了能苟过样例还有啥用</em></strong></p>
+<p><strong>方法二：按行访问</strong></p>
+<p><strong>思路</strong></p>
+<p>按照与逐行读取 Z 字形图案相同的顺序访问字符串。</p>
+<p><strong>算法</strong></p>
+<p>首先访问 <code>行 0</code> 中的所有字符，接着访问 <code>行 1</code>，然后 <code>行 2</code>，依此类推…</p>
+<p>对于所有整数 k，</p>
+<ul>
+<li>行 0 中的字符位于索引 k  (2⋅numRows−2)处;</li>
+<li>行 numRows−1 中的字符位于索引 k  (2⋅numRows−2)+numRows−1 处;</li>
+<li>内部的 行 i 中的字符位于索引 k  (2⋅numRows−2)+i 以及 (k+1)(2⋅numRows−2)−i 处;</li>
+</ul>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(n)，其中 n==len(s)。每个索引被访问一次。</li>
+<li>空间复杂度：O(n)。对于 cpp 实现，如果返回字符串不被视为额外空间，则复杂度为 O(1)。</li>
+</ul>
+<p><strong>延伸：边界值分析</strong></p>
+<p>其实就是字符串长度为1的情况要单独讨论下</p>
 
       
     </div>
@@ -594,7 +614,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode的菜鸡实录"><span class="nav-number">1.</span> <span class="nav-text">LeetCode的菜鸡实录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、两数之和"><span class="nav-number">1.1.</span> <span class="nav-text">1、两数之和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">2、两数相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、无重复字符的最长子串"><span class="nav-number">1.3.</span> <span class="nav-text">3、无重复字符的最长子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、寻找两个有序数组的中位数"><span class="nav-number">1.4.</span> <span class="nav-text">4、寻找两个有序数组的中位数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、最长回文子串"><span class="nav-number">1.5.</span> <span class="nav-text">5、最长回文子串</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode的菜鸡实录"><span class="nav-number">1.</span> <span class="nav-text">LeetCode的菜鸡实录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、两数之和"><span class="nav-number">1.1.</span> <span class="nav-text">1、两数之和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">2、两数相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、无重复字符的最长子串"><span class="nav-number">1.3.</span> <span class="nav-text">3、无重复字符的最长子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、寻找两个有序数组的中位数"><span class="nav-number">1.4.</span> <span class="nav-text">4、寻找两个有序数组的中位数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、最长回文子串"><span class="nav-number">1.5.</span> <span class="nav-text">5、最长回文子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、Z字型变换"><span class="nav-number">1.6.</span> <span class="nav-text">6、Z字型变换</span></a></li></ol></li></ol></div>
             
 
           </div>
