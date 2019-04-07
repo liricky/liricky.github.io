@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="A Little Noob">
 <meta property="og:description" content="LeetCode的菜鸡实录">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-06T13:58:18.620Z">
+<meta property="og:updated_time" content="2019-04-07T13:42:59.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode菜鸡之路">
 <meta name="twitter:description" content="LeetCode的菜鸡实录">
@@ -443,6 +443,29 @@
 <p>就是逐个识别字符，要一个符号标志和一个首位判断。不是首位且不在0-9之间返回，是首位为空直接找下一位，是首位非空，判断是否是符号，如果为-，，符号标志置1，消除首位标识，如果为+，仅消除首位标识即可，如果直接是数字就直接开始记录并消除首位标识。如果不是首位且读到字母，运算方式很简单，这里和之前的题目一样，要考虑超出范围直接返回上或下临界点。小于0用-，大于等于0用加。特别注意”-00001”这类情况，读到符号后的第一个非0数字才开始运算，并消除符号位，不然用0运算，符号位就会消失，正负发生错误。</p>
 <p>总的来说细心+注意细节就行了，碰到的一些临界点的情况错过一次之后希望以后就能记住，然后日后写代码的时候多注意。</p>
 <p><strong>延伸：NULL</strong></p>
+<h2 id="9、回文数"><a href="#9、回文数" class="headerlink" title="9、回文数"></a>9、回文数</h2><p>其实还可以用比过数据的代码更加节约的方法，也就是并不需要将整个数完全翻转完再判断，只需要翻转一般的数字比较即可。</p>
+<p>其他需要注意的就是不要超过INT_MAX爆炸即可。</p>
+<p><strong>方法：反转一半数字</strong></p>
+<p><strong>思路</strong></p>
+<p>映入脑海的第一个想法是将数字转换为字符串，并检查字符串是否为回文。但是，这需要额外的非常量空间来创建问题描述中所不允许的字符串。</p>
+<p>第二个想法是将数字本身反转，然后将反转后的数字与原始数字进行比较，如果它们是相同的，那么这个数字就是回文。 但是，如果反转后的数字大于 int.MAX，我们将遇到整数溢出问题。</p>
+<p>按照第二个想法，为了避免数字反转可能导致的溢出问题，为什么不考虑只反转 int\text{int}int 数字的一半？毕竟，如果该数字是回文，其后半部分反转后应该与原始数字的前半部分相同。</p>
+<p>例如，输入 <code>1221</code>，我们可以将数字“12<strong>21</strong>”的后半部分从“<strong>21</strong>”反转为“<strong>12</strong>”，并将其与前半部分“12”进行比较，因为二者相同，我们得知数字 <code>1221</code> 是回文。</p>
+<p>让我们看看如何将这个想法转化为一个算法。</p>
+<p><strong>算法</strong></p>
+<p>首先，我们应该处理一些临界情况。所有负数都不可能是回文，例如：-123 不是回文，因为 <code>-</code> 不等于 <code>3</code>。所以我们可以对所有负数返回 false。</p>
+<p>现在，让我们来考虑如何反转后半部分的数字。 对于数字 <code>1221</code>，如果执行 <code>1221 % 10</code>，我们将得到最后一位数字 <code>1</code>，要得到倒数第二位数字，我们可以先通过除以 10 把最后一位数字从 <code>1221</code> 中移除，<code>1221 / 10 = 122</code>，再求出上一步结果除以10的余数，<code>122 % 10 = 2</code>，就可以得到倒数第二位数字。如果我们把最后一位数字乘以10，再加上倒数第二位数字，<code>1 * 10 + 2 = 12</code>，就得到了我们想要的反转后的数字。 如果继续这个过程，我们将得到更多位数的反转数字。</p>
+<p>现在的问题是，我们如何知道反转数字的位数已经达到原始数字位数的一半？</p>
+<p>我们将原始数字除以 10，然后给反转后的数字乘上 10，所以，当原始数字小于反转后的数字时，就意味着我们已经处理了一半位数的数字。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsPalindrome</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 特殊情况：</span></span><br><span class="line">        <span class="comment">// 如上所述，当 x &lt; 0 时，x 不是回文数。</span></span><br><span class="line">        <span class="comment">// 同样地，如果数字的最后一位是 0，为了使该数字为回文，</span></span><br><span class="line">        <span class="comment">// 则其第一位数字也应该是 0</span></span><br><span class="line">        <span class="comment">// 只有 0 满足这一属性</span></span><br><span class="line">        <span class="keyword">if</span>(x &lt; <span class="number">0</span> || (x % <span class="number">10</span> == <span class="number">0</span> &amp;&amp; x != <span class="number">0</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> revertedNumber = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(x &gt; revertedNumber) &#123;</span><br><span class="line">            revertedNumber = revertedNumber * <span class="number">10</span> + x % <span class="number">10</span>;</span><br><span class="line">            x /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 当数字长度为奇数时，我们可以通过 revertedNumber/10 去除处于中位的数字。</span></span><br><span class="line">        <span class="comment">// 例如，当输入为 12321 时，在 while 循环的末尾我们可以得到 x = 12，revertedNumber = 123，</span></span><br><span class="line">        <span class="comment">// 由于处于中位的数字不影响回文（它总是与自己相等），所以我们可以简单地将其去除。</span></span><br><span class="line">        <span class="keyword">return</span> x == revertedNumber || x == revertedNumber/<span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(log⁡10(n))， 对于每次迭代，我们会将输入除以10，因此时间复杂度为 O(log⁡10(n))。</li>
+<li>空间复杂度：O(1)。</li>
+</ul>
+<p>直接返回false的if条件中能扩得越大越好，小于0和末位为0但原数不为0都可以直接清洗掉。</p>
+<p>返回时候的或是用来规避奇数个位数和偶数个位数的情况。</p>
+<p><strong>延伸：边界  INT_MAX判断</strong></p>
 
       
     </div>
@@ -625,7 +648,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode的菜鸡实录"><span class="nav-number">1.</span> <span class="nav-text">LeetCode的菜鸡实录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、两数之和"><span class="nav-number">1.1.</span> <span class="nav-text">1、两数之和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">2、两数相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、无重复字符的最长子串"><span class="nav-number">1.3.</span> <span class="nav-text">3、无重复字符的最长子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、寻找两个有序数组的中位数"><span class="nav-number">1.4.</span> <span class="nav-text">4、寻找两个有序数组的中位数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、最长回文子串"><span class="nav-number">1.5.</span> <span class="nav-text">5、最长回文子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、Z字型变换"><span class="nav-number">1.6.</span> <span class="nav-text">6、Z字型变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7、整数反转"><span class="nav-number">1.7.</span> <span class="nav-text">7、整数反转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8、字符串转换整数"><span class="nav-number">1.8.</span> <span class="nav-text">8、字符串转换整数</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode的菜鸡实录"><span class="nav-number">1.</span> <span class="nav-text">LeetCode的菜鸡实录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、两数之和"><span class="nav-number">1.1.</span> <span class="nav-text">1、两数之和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、两数相加"><span class="nav-number">1.2.</span> <span class="nav-text">2、两数相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、无重复字符的最长子串"><span class="nav-number">1.3.</span> <span class="nav-text">3、无重复字符的最长子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、寻找两个有序数组的中位数"><span class="nav-number">1.4.</span> <span class="nav-text">4、寻找两个有序数组的中位数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、最长回文子串"><span class="nav-number">1.5.</span> <span class="nav-text">5、最长回文子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、Z字型变换"><span class="nav-number">1.6.</span> <span class="nav-text">6、Z字型变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7、整数反转"><span class="nav-number">1.7.</span> <span class="nav-text">7、整数反转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8、字符串转换整数"><span class="nav-number">1.8.</span> <span class="nav-text">8、字符串转换整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9、回文数"><span class="nav-number">1.9.</span> <span class="nav-text">9、回文数</span></a></li></ol></li></ol></div>
             
 
           </div>
