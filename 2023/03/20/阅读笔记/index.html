@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>阅读笔记 | Ricky Li's Blog</title><meta name="author" content="Ricky Li"><meta name="copyright" content="Ricky Li"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="阅读笔记SIFT、SURF、GMS SURF与SIFT  SIFT中尺度空间、高斯金字塔、差分金字塔（DOG金字塔）、图像金字塔    涉及提取图像特征点的原理  SIFT有关128维向量1    如何得到的128维 SIFT有关128维向量2 对128维的理解：8*8区域（表示梯度得格子）分成16个2*2区域，每个2*2区域生成一个8个方向向量的种子，总共4*4*8&#x3D;128维 （像素点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阅读笔记">
+<meta property="og:url" content="http://liricky.github.io/2023/03/20/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Ricky Li&#39;s Blog">
+<meta property="og:description" content="阅读笔记SIFT、SURF、GMS SURF与SIFT  SIFT中尺度空间、高斯金字塔、差分金字塔（DOG金字塔）、图像金字塔    涉及提取图像特征点的原理  SIFT有关128维向量1    如何得到的128维 SIFT有关128维向量2 对128维的理解：8*8区域（表示梯度得格子）分成16个2*2区域，每个2*2区域生成一个8个方向向量的种子，总共4*4*8&#x3D;128维 （像素点">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2023-03-20T06:12:51.000Z">
+<meta property="article:modified_time" content="2023-03-20T06:22:04.970Z">
+<meta property="article:author" content="Ricky Li">
+<meta property="article:tag" content="研究生黑历史">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://liricky.github.io/2023/03/20/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '阅读笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-20 14:22:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ricky Li's Blog"><span class="site-name">Ricky Li's Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">阅读笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-20T06:12:51.000Z" title="发表于 2023-03-20 14:12:51">2023-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-20T06:22:04.970Z" title="更新于 2023-03-20 14:22:04">2023-03-20</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="阅读笔记"><a href="#阅读笔记" class="headerlink" title="阅读笔记"></a>阅读笔记</h1><h2 id="SIFT、SURF、GMS"><a href="#SIFT、SURF、GMS" class="headerlink" title="SIFT、SURF、GMS"></a>SIFT、SURF、GMS</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dcrmg/article/details/52601010">SURF与SIFT</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dcrmg/article/details/52561656">SIFT中尺度空间、高斯金字塔、差分金字塔（DOG金字塔）、图像金字塔</a>    涉及提取图像特征点的原理</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mikewolf2002/p/5666511.html">SIFT有关128维向量1</a>    如何得到的128维<img src="/images/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0.assets/image-20200701165856722.png" alt="image-20200701165856722"></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wd1603926823/article/details/46564857">SIFT有关128维向量2</a></p>
+<p>对128维的理解：8*8区域（表示梯度得格子）分成16个2*2区域，每个2*2区域生成一个8个方向向量的种子，总共4*4*8&#x3D;128维</p>
+<p><strong>（像素点在这里对应得是线得交点，格子表示梯度；右图）</strong></p>
+<p><img src="/images/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0.assets/image-20200701164604470.png" alt="image-20200701164604470"></p>
+<p><strong>上面这幅图谨慎理解</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Small_Munich/article/details/87833364">GMS匹配</a>，较新的特征匹配方法。</p>
+<p>别人的总结：GMS算法通过对比经典特征匹配算法在鲁棒性与实时性上面都优于SIFT、SURF、KAZE等算法。但是GMS算法对旋转不变性较差。同时GMS算法在图像网格的划分、与邻域点阈值的设置、匹配特征点$X_i$*$X_i$的小邻域范围的选择都需要进行考虑。</p>
+</li>
+</ul>
+<h2 id="opencv滤波算法"><a href="#opencv滤波算法" class="headerlink" title="opencv滤波算法"></a>opencv滤波算法</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/godadream/article/details/81568844">高斯滤波</a></li>
+</ul>
+<h2 id="仿射变换"><a href="#仿射变换" class="headerlink" title="仿射变换"></a>仿射变换</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/keith_bb/article/details/56331356">仿射变换1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/shine-lee/p/10950963.html">仿射变换2</a>  仿射变换：平移、旋转、放缩、剪切、反射  <img src="https://s2.ax1x.com/2019/05/30/VKWwIx.png" alt="transformations venn diagram"></li>
+</ul>
+<h2 id="K-Means（聚类）"><a href="#K-Means（聚类）" class="headerlink" title="K-Means（聚类）"></a>K-Means（聚类）</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_36710456/article/details/88019323">文字描述</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.oschina.net/code/snippet_42411_2527">一维Java代码</a></li>
+</ul>
+<p>思想描述：</p>
+<ol>
+<li>首先输入k的值，即我们希望将数据集经过聚类得到k个分组。</li>
+<li>从数据集中随机选择k个数据点作为初始大哥（质心，Centroid）</li>
+<li>对集合中每一个小弟，计算与每一个大哥的距离（距离的含义后面会讲），离哪个大哥距离近，就跟定哪个大哥。</li>
+<li>这时每一个大哥手下都聚集了一票小弟，这时候召开人民代表大会，每一群选出新的大哥（其实是通过算法选出新的质心）。</li>
+<li>如果新大哥和老大哥之间的距离小于某一个设置的阈值（表示重新计算的质心的位置变化不大，趋于稳定，或者说收敛），可以认为我们进行的聚类已经达到期望的结果，算法终止。</li>
+<li>如果新大哥和老大哥距离变化很大，需要迭代3~5步骤。</li>
+</ol>
+<p><strong>c++实现</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> * <span class="title">myKMeans</span><span class="params">(std::vector&lt;<span class="type">double</span>&gt; everyAngle)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> num = <span class="number">6</span>;</span><br><span class="line">    <span class="type">double</span> *everyAngleCopy = <span class="keyword">new</span> <span class="type">double</span>[everyAngle.<span class="built_in">size</span>()];</span><br><span class="line">    <span class="type">int</span> *angleSign = <span class="keyword">new</span> <span class="type">int</span>[everyAngle.<span class="built_in">size</span>()];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; everyAngle.<span class="built_in">size</span>(); i++)&#123;</span><br><span class="line">        *(everyAngleCopy + i) = everyAngle[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">double</span> oldCenter[<span class="number">6</span>];</span><br><span class="line">    <span class="type">double</span> newCenter[<span class="number">6</span>];</span><br><span class="line">    <span class="type">static</span> <span class="type">double</span> ans[<span class="number">12</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; num; i++)&#123;</span><br><span class="line">        oldCenter[i] = *(everyAngleCopy + i*(everyAngle.<span class="built_in">size</span>()/<span class="number">6</span>));</span><br><span class="line">        *(angleSign + i*(everyAngle.<span class="built_in">size</span>()/<span class="number">6</span>)) = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="type">double</span> weight[<span class="number">6</span>];</span><br><span class="line">        std::<span class="built_in">memset</span>(weight, <span class="number">0.0</span>, <span class="built_in">sizeof</span>(weight));</span><br><span class="line">        <span class="type">int</span> numEveryClass[<span class="number">6</span>];</span><br><span class="line">        std::<span class="built_in">memset</span>(numEveryClass, <span class="number">0</span>, <span class="built_in">sizeof</span>(numEveryClass));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; everyAngle.<span class="built_in">size</span>(); i++)&#123;</span><br><span class="line">            <span class="type">double</span> minLen = <span class="number">10000.0</span>;</span><br><span class="line">            <span class="type">double</span> thisAngle = everyAngle[i];</span><br><span class="line">            <span class="type">int</span> thisAngleClass = <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; num; j++)&#123;</span><br><span class="line">                <span class="type">double</span> thisLen = <span class="built_in">fabs</span>(thisAngle - oldCenter[j]);</span><br><span class="line">                <span class="keyword">if</span>(thisLen &lt; minLen)&#123;</span><br><span class="line">                    minLen = thisLen;</span><br><span class="line">                    thisAngleClass = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            *(angleSign + i) = thisAngleClass;</span><br><span class="line">            weight[thisAngleClass] += *(everyAngleCopy + i);</span><br><span class="line">            numEveryClass[thisAngleClass]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; num; i++)&#123;</span><br><span class="line">            newCenter[i] = weight[i] / numEveryClass[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">isequaldouble</span>(newCenter, oldCenter))&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; num; j++)&#123;</span><br><span class="line">                oldCenter[j] = newCenter[j];</span><br><span class="line">            &#125;</span><br><span class="line">            std::<span class="built_in">memset</span>(newCenter, <span class="number">0.0</span>, <span class="built_in">sizeof</span>(newCenter));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// -176,-163,-135,-104,-82,-23</span></span><br><span class="line">    <span class="type">double</span> minClass1 = INT32_MAX, maxClass1 = <span class="number">-200</span>, minClass2 = INT32_MAX, maxClass2 = <span class="number">-200</span>, minClass3 = INT32_MAX, maxClass3 = <span class="number">-200</span>, minClass4 = INT32_MAX, maxClass4 = <span class="number">-200</span>, minClass5 = INT32_MAX, maxClass5 = <span class="number">-200</span>, minClass6 = INT32_MAX, maxClass6 = <span class="number">-200</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; everyAngle.<span class="built_in">size</span>(); i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(*(angleSign + i) == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &lt; minClass1)&#123;</span><br><span class="line">                minClass1 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &gt; maxClass1)&#123;</span><br><span class="line">                maxClass1 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(*(angleSign + i) == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &lt; minClass2)&#123;</span><br><span class="line">                minClass2 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &gt; maxClass2)&#123;</span><br><span class="line">                maxClass2 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(*(angleSign + i) == <span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &lt; minClass3)&#123;</span><br><span class="line">                minClass3 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &gt; maxClass3)&#123;</span><br><span class="line">                maxClass3 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(*(angleSign + i) == <span class="number">3</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &lt; minClass4)&#123;</span><br><span class="line">                minClass4 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &gt; maxClass4)&#123;</span><br><span class="line">                maxClass4 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(*(angleSign + i) == <span class="number">4</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &lt; minClass5)&#123;</span><br><span class="line">                minClass5 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &gt; maxClass5)&#123;</span><br><span class="line">                maxClass5 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(*(angleSign + i) == <span class="number">5</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &lt; minClass6)&#123;</span><br><span class="line">                minClass6 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(everyAngleCopy[i] &gt; maxClass1)&#123;</span><br><span class="line">                maxClass6 = everyAngleCopy[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ans[<span class="number">0</span>] = minClass1;</span><br><span class="line">    ans[<span class="number">1</span>] = maxClass1;</span><br><span class="line">    ans[<span class="number">2</span>] = minClass2;</span><br><span class="line">    ans[<span class="number">3</span>] = maxClass2;</span><br><span class="line">    ans[<span class="number">4</span>] = minClass3;</span><br><span class="line">    ans[<span class="number">5</span>] = maxClass3;</span><br><span class="line">    ans[<span class="number">6</span>] = minClass4;</span><br><span class="line">    ans[<span class="number">7</span>] = maxClass4;</span><br><span class="line">    ans[<span class="number">8</span>] = minClass5;</span><br><span class="line">    ans[<span class="number">9</span>] = maxClass5;</span><br><span class="line">    ans[<span class="number">10</span>] = minClass6;</span><br><span class="line">    ans[<span class="number">11</span>] = maxClass6;</span><br><span class="line">    <span class="keyword">delete</span> [] everyAngleCopy;</span><br><span class="line">    <span class="keyword">delete</span> [] angleSign;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code>everyAngle中存放了有序double型数据
+
+数据范围：-180~0
+
+以上内容为适应特定需求，修改了返回值，仅返回每类上下界。如需完整内容，可以使用二维数组进行存储返回。
+</code></pre>
+<p><strong>潜在问题1：</strong>对于初始分类不适宜相同？之前实践中分6类，而有序数据中前6个数据均为-180就导致了分类出现问题，如果对于有序数据还是分散随机去处理更好，无序数据取啥都一样。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lvjun93/article/details/8507528"><strong>潜在问题2：</strong></a><code>newCenter[i] = weight[i] / numEveryClass[i];</code>一句中的numEveryClass对应了每次分类之后的类中数据数量，这部分有没有可能为0，如果为0怎么处理。</p>
+<h2 id="图像标注工具"><a href="#图像标注工具" class="headerlink" title="图像标注工具"></a>图像标注工具</h2><p>机器学习训练样本标注工具：labelme</p>
+<h2 id="下采样"><a href="#下采样" class="headerlink" title="下采样"></a>下采样</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44451032/article/details/99974665">机器学习——下采样(under-sampling)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/majinlei121/article/details/46742339?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase">图像的上采样（upsampling）与下采样（subsampled）</a></p>
+<h2 id="数据挖掘——分类方法"><a href="#数据挖掘——分类方法" class="headerlink" title="数据挖掘——分类方法"></a>数据挖掘——分类方法</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39391192/article/details/82109344">KNN（k近邻）、贝叶斯分类</a></p>
+<h2 id="无监督条件生成器（Unsupervised-Conditional-Generation）"><a href="#无监督条件生成器（Unsupervised-Conditional-Generation）" class="headerlink" title="无监督条件生成器（Unsupervised Conditional Generation）"></a>无监督条件生成器（Unsupervised Conditional Generation）</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangwei19871103/article/details/95524771">博客1</a></p>
+<p>问题1：生成器为了骗过判别器直接生成了一张另一个领域的图片，无视输入</p>
+<p><img src="/images/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0.assets/image-20200706154826915.png" alt="image-20200706154826915"></p>
+<p>解决方案：</p>
+<ol>
+<li><p>第一种是直接无视问题，因为你的生成器生成的图片不会跟原图片差太多，所以不太可能直接变成其他的样子，除非你的生成模型很深，很复杂，一般不会。</p>
+</li>
+<li><p>第二种解决办法就是将输入和输出的图片编码，比如VGG16模型，提取特征，让特征向量越接近越好，这样输入和输出就不会有太大变化</p>
+</li>
+<li><p>第三种方法就使用CycleGAN</p>
+</li>
+</ol>
+<h2 id="Softmax分类器"><a href="#Softmax分类器" class="headerlink" title="Softmax分类器"></a>Softmax分类器</h2><p>Softmax的输出：归一化的分类概率。输入一个向量（向量元素为任意实数），输出的是一个向量（向量元素为0-1之间的概率值）</p>
+<p><img src="/images/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0.assets/image-20200706171641397.png" alt="image-20200706171641397"></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hutingting0611/article/details/78785529">博客1</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/donkey_1993/article/details/80451562">博客2</a></p>
+<h2 id="机器学习中范数L1和L2"><a href="#机器学习中范数L1和L2" class="headerlink" title="机器学习中范数L1和L2"></a>机器学习中范数L1和L2</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jinping_shi/article/details/52433975">博客1</a></p>
+<ul>
+<li><p>L0范数是指向量中非0的元素的个数</p>
+</li>
+<li><p>L1范数是指权值向量$w$中各个元素的<strong>绝对值之和</strong>，通常表示为$||w||_1$</p>
+</li>
+<li><p>L2范数是指权值向量$w$中各个元素的<strong>平方和然后再求平方根</strong>，通常表示为$||w||_2$，也就是欧几里得距离公式</p>
+<p><strong>范数</strong>是衡量某个向量空间（或矩阵）中的每个向量以长度或大小。范数的一般化定义：对实数p&gt;&#x3D;1， 范数定义如下：</p>
+<p><img src="/images/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0.assets/image-20200706175857518.png" alt="image-20200706175857518"></p>
+</li>
+<li><p>L1范数可以产生稀疏权值矩阵，即产生一个稀疏模型，可以用于特征选择</p>
+</li>
+<li><p>L2范数可以防止模型过拟合（overfitting）；一定程度上，L1也可以防止过拟合</p>
+</li>
+</ul>
+<h2 id="形态学运算"><a href="#形态学运算" class="headerlink" title="形态学运算"></a>形态学运算</h2><ul>
+<li>腐蚀：腐蚀的效果是把图片“变瘦”，其原理是在原图的小区域内取局部最小值</li>
+<li>膨胀：膨胀与腐蚀相反，取得是局部最大值，效果是把图片“变胖”</li>
+<li>&#x3D;&#x3D;开运算&#x3D;&#x3D;：先腐蚀后膨胀（因为先腐蚀会分开物体，这样容易记住），可以分离物体，消除小区域</li>
+<li>&#x3D;&#x3D;闭运算&#x3D;&#x3D;：先膨胀后腐蚀（先膨胀会使白色的部分扩张，以至于消除“闭合”物体里面的小黑洞）</li>
+<li>形态学梯度：膨胀图减去腐蚀图，得到轮廓图</li>
+<li>顶帽：原图减去开运算后的图</li>
+<li>黑帽：闭运算后的图减去原图</li>
+</ul>
+<h2 id="bag-of-words-词袋模型"><a href="#bag-of-words-词袋模型" class="headerlink" title="bag of words 词袋模型"></a>bag of words 词袋模型</h2><p>使用向量对特征进行标示，只表示特征是否出现，忽略这些特征之间的次序</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lovely_juzi/article/details/11716169">博客</a></p>
+<p>这部分内容是在看有关金字塔池化层论文时所关联的：Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://liricky.github.io">Ricky Li</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liricky.github.io/2023/03/20/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">http://liricky.github.io/2023/03/20/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liricky.github.io" target="_blank">Ricky Li's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A0%94%E7%A9%B6%E7%94%9F%E9%BB%91%E5%8E%86%E5%8F%B2/">研究生黑历史</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/03/20/Golang%E8%A7%81%E4%B9%A0/" title="Golang见习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Golang见习</div></div></a></div><div class="next-post pull-right"><a href="/2023/03/20/%E8%A5%BF%E7%93%9C%E4%B9%A6%E9%9A%8F%E7%AC%94/" title="西瓜书随笔"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">西瓜书随笔</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/03/20/%E8%A5%BF%E7%93%9C%E4%B9%A6%E9%9A%8F%E7%AC%94/" title="西瓜书随笔"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-20</div><div class="title">西瓜书随笔</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ricky Li</div><div class="author-info__description">Learning is all you need</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/liricky"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Java & DL; 持续学习and成长ing</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">阅读笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SIFT%E3%80%81SURF%E3%80%81GMS"><span class="toc-number">1.1.</span> <span class="toc-text">SIFT、SURF、GMS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#opencv%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">opencv滤波算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">仿射变换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K-Means%EF%BC%88%E8%81%9A%E7%B1%BB%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">K-Means（聚类）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E6%A0%87%E6%B3%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">1.5.</span> <span class="toc-text">图像标注工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E9%87%87%E6%A0%B7"><span class="toc-number">1.6.</span> <span class="toc-text">下采样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E2%80%94%E2%80%94%E5%88%86%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="toc-number">1.7.</span> <span class="toc-text">数据挖掘——分类方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3%E6%9D%A1%E4%BB%B6%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%88Unsupervised-Conditional-Generation%EF%BC%89"><span class="toc-number">1.8.</span> <span class="toc-text">无监督条件生成器（Unsupervised Conditional Generation）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Softmax%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-number">1.9.</span> <span class="toc-text">Softmax分类器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E8%8C%83%E6%95%B0L1%E5%92%8CL2"><span class="toc-number">1.10.</span> <span class="toc-text">机器学习中范数L1和L2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%A2%E6%80%81%E5%AD%A6%E8%BF%90%E7%AE%97"><span class="toc-number">1.11.</span> <span class="toc-text">形态学运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bag-of-words-%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.12.</span> <span class="toc-text">bag of words 词袋模型</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/Golang%E8%A7%81%E4%B9%A0/" title="Golang见习">Golang见习</a><time datetime="2023-03-20T06:23:20.000Z" title="发表于 2023-03-20 14:23:20">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="阅读笔记">阅读笔记</a><time datetime="2023-03-20T06:12:51.000Z" title="发表于 2023-03-20 14:12:51">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/%E8%A5%BF%E7%93%9C%E4%B9%A6%E9%9A%8F%E7%AC%94/" title="西瓜书随笔">西瓜书随笔</a><time datetime="2023-03-20T06:12:42.000Z" title="发表于 2023-03-20 14:12:42">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/20/LeetCode%E7%9A%84%E8%8F%9C%E9%B8%A1%E5%AE%9E%E5%BD%95/" title="LeetCode的菜鸡实录">LeetCode的菜鸡实录</a><time datetime="2023-03-20T05:00:23.000Z" title="发表于 2023-03-20 13:00:23">2023-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/18/hello-world/" title="Hello World">Hello World</a><time datetime="2023-03-18T14:13:40.431Z" title="发表于 2023-03-18 22:13:40">2023-03-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Ricky Li</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
