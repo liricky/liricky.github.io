@@ -103,5 +103,5 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/liricky/liricky.github.io
-  branch: master
+  repo: https://github.com/liricky/liricky.github.io.git
+  branch: gh-pages
