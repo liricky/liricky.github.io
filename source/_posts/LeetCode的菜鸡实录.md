@@ -2,6 +2,7 @@
 title: LeetCode的菜鸡实录
 date: 2023-03-20 13:00:23
 tags: 算法
+categories: 算法
 
 ---
 
