@@ -879,7 +879,7 @@ public:
 };
 ```
 
-![image-20220521221910962](/_posts/LeetCode的菜鸡实录.assets/image-20220521221910962.png)
+![image-20220521221910962](/images/LeetCode的菜鸡实录.assets/image-20220521221910962.png)
 
 ## 20、有效的括号
 
@@ -1329,11 +1329,11 @@ public:
 
 题解里面的
 
-![image-20220522173034852](LeetCode的菜鸡实录.assets/image-20220522173034852.png)
+![image-20220522173034852](/images/LeetCode的菜鸡实录.assets/image-20220522173034852.png)
 
 最终计算完之后是取了n次幂矩阵的左上角元素的值作为结果，从结果的数值上来说这个是没错的，但是中间的形式是如何转换的并没有提。我的理解是，对于f(0)这种不明确具体含义的内容最理想的情况应该是不用作初始的值用于计算，与其使用一个不确定是否符合规则的初始化值，不如从更为确定的初始化值开始计算同时添加对于其它情况的特判。[对于这个问题的思考可以参考这个题解，里面的思路是和我一样的，即仅可保证下面的这个式子是确定的](https://blog.csdn.net/weixin_44458659/article/details/110086455)
 
-![image-20220522173813218](LeetCode的菜鸡实录.assets/image-20220522173813218.png)
+![image-20220522173813218](/images/LeetCode的菜鸡实录.assets/image-20220522173813218.png)
 
 题解代码：
 
@@ -1535,7 +1535,7 @@ class Solution {
 
 那上面这种解法思路其实蛮简单的，说到底还是对于java的数据结构不太熟，但是这道题还没结束，新开的这个哈希表是必要的吗？其实还可以接着省空间。
 
-![image-20210722160637564](LeetCode的菜鸡实录.assets/image-20210722160637564.png)
+![image-20210722160637564](/images/LeetCode的菜鸡实录.assets/image-20210722160637564.png)
 
 代码如下：
 
@@ -1590,7 +1590,7 @@ class Solution {
 }
 ```
 
-![image-20210629194912986](LeetCode的菜鸡实录.assets/image-20210629194912986.png)
+![image-20210629194912986](/images/LeetCode的菜鸡实录.assets/image-20210629194912986.png)
 
 ## 239、滑动窗口最大值
 
@@ -1893,19 +1893,19 @@ class Solution {
 
 首先是全1的进制能联想到等比数列（确实想到了，但不知道接下去咋做），感觉按照题解的思路来走的话，应该是先要把搜索的范围缩小下来，因为如果是在10^18范围里面去找肯定不现实。不过n的范围给了，k的范围也给了，是不是能够把m范围定下来？m的范围一定是比较小的，可以有效减少枚举的数量（隐含的限制条件，m为整数）。
 
-![image-20210618142750291](LeetCode的菜鸡实录.assets/image-20210618142750291.png)
+![image-20210618142750291](/images/LeetCode的菜鸡实录.assets/image-20210618142750291.png)
 
 然后就有了上面这个结论，其实第一步等比数列的求和是想到了的，恒等变形也能做，但是放缩这一步的确想不到。（从结果反推去思考可能是要得到一个系数k用来吧m+1次里面的1去掉）。然后一通折腾取m的最大上届和k的最小下届就能得到一个对m的限制范围。这个范围拿到之后其实就可以确定整体的解决思路了，就是找一个限制范围然后枚举。
 
 m的枚举范围知道了，但是k的取值或者说是范围还是没有确定下来，所以需要也给一个限制才能在良好的时间开销下进行搜索。下面这个是真的一点都没想到。
 
-![image-20210618143355450](LeetCode的菜鸡实录.assets/image-20210618143355450.png)
+![image-20210618143355450](/images/LeetCode的菜鸡实录.assets/image-20210618143355450.png)
 
 就反正是一通操作把k的取值给定下来了，这就保证了在已知n，m做枚举的情况下，可以快速得到k，然后进行校验。
 
 **题解描述：**
 
-![image-20210618143551645](LeetCode的菜鸡实录.assets/image-20210618143551645.png)
+![image-20210618143551645](/images/LeetCode的菜鸡实录.assets/image-20210618143551645.png)
 
 **题解代码：**(范围开到long就够了)
 
@@ -1978,7 +1978,7 @@ $dp[i][j]$表示方案数量，i表示已经使用的硬币种类数，j表示�
 
 **==关于重复计算的问题：==**（按照给定的硬币数组的顺序确定组合的顺序，可以保证对于每种组合方案存在唯一的排序）
 
-![image-20210610142206858](LeetCode的菜鸡实录.assets/image-20210610142206858.png)
+![image-20210610142206858](/images/LeetCode的菜鸡实录.assets/image-20210610142206858.png)
 
 代码如下：
 
@@ -2003,9 +2003,9 @@ class Solution {
 
 对于广度优先搜索来说，本题的转化过程并不是一个严格的树形结构，实际上下层的结点仍然可以通过一次转动到达上层的结点中，但是为了保证旋转的次数最少，在这里实际上是在每一步中都穷举了，所以对于出现过的结点，在下面其实就限制了变化状态的可能情况，不再进入。对于死亡数字可使用hash表进行存储来判断。
 
-![image-20210626002052193](LeetCode的菜鸡实录.assets/image-20210626002052193.png)
+![image-20210626002052193](/images/LeetCode的菜鸡实录.assets/image-20210626002052193.png)
 
-两个注意点：![image-20210626002115929](LeetCode的菜鸡实录.assets/image-20210626002115929.png)
+两个注意点：![image-20210626002115929](/images/LeetCode的菜鸡实录.assets/image-20210626002115929.png)
 
 思路上是简单的，但是即便看了题解再去写还是有不会的地方...
 
@@ -2164,9 +2164,9 @@ StringBuffer和char数组这些都属于实现技巧上的东西了。
 
 注意到原本的起点车站和终点车站可能同时位于多条公交路线上，因此在新图上可能有多个起点和终点。对于这种情况，我们**初始可以同时入队多个点，并在广度优先搜索结束后检查到各个终点的最短路径，取其最小值才是最少换乘次数**。
 
-![image-20210628172200388](LeetCode的菜鸡实录.assets/image-20210628172200388.png)
+![image-20210628172200388](/images/LeetCode的菜鸡实录.assets/image-20210628172200388.png)
 
-![image-20210628184432083](LeetCode的菜鸡实录.assets/image-20210628184432083.png)
+![image-20210628184432083](/images/LeetCode的菜鸡实录.assets/image-20210628184432083.png)
 
 ```java
 class Solution {
@@ -2274,7 +2274,7 @@ class Solution {
 
 打印最后一次的dp数组：
 
-![打印输出](LeetCode的菜鸡实录.assets/image-20210610012926032.png)
+![打印输出](/images/LeetCode的菜鸡实录.assets/image-20210610012926032.png)
 
 输入样例：
 
@@ -2337,7 +2337,7 @@ class Solution {
 
 写到最后其实还有点似懂非懂。。。也没办法了只能等后面有机会再理解了。连着几天dp了，今天其实理解的还是差在正好用j个人和用j个人（可以有人不用）的区别上面吧，下面的图是关于这个问题的解释，本质体现在初始化和最终结果上，如果是正好用j个人，那肯定只有用0个人的时候是0（最初的情况），如果是用j个人没强制是否用完，那实际上第一行全部都初始为1，如果是正好用j个人，最终输出就要把各个可能的人数做一遍统计，如果是用j个人，那就已经默认把用多少人的情况考虑在里面了，直接输$dp[n][minProfit]$就行。
 
-![image-20210610014017019](LeetCode的菜鸡实录.assets/image-20210610014017019.png)
+![image-20210610014017019](/images/LeetCode的菜鸡实录.assets/image-20210610014017019.png)
 
 ## [1049、最后一块石头的重量 II](https://leetcode-cn.com/problems/last-stone-weight-ii/)
 
@@ -2499,7 +2499,7 @@ class Solution {
 
 官方题解的第二种感觉上是空间换时间？先顺序扫一遍做统计，然后再用值去扫（可以降低到线性）。想明白了也算是简单的
 
-![image-20210702204116892](LeetCode的菜鸡实录.assets/image-20210702204116892.png)
+![image-20210702204116892](/images/LeetCode的菜鸡实录.assets/image-20210702204116892.png)
 
 ```java
 class Solution {
@@ -2535,7 +2535,7 @@ class Solution {
 
 然后就是滑动窗口，这个算是模板做法吧，贴个评论里面的模板总结：（当时只想到了3，4那个只能算沾了一点点边。。。）
 
-![image-20210719154226203](LeetCode的菜鸡实录.assets/image-20210719154226203.png)
+![image-20210719154226203](/images/LeetCode的菜鸡实录.assets/image-20210719154226203.png)
 
 其实想到了后面三步就很好做了，相当于是一个模板题，代码：
 
@@ -2581,7 +2581,7 @@ class Solution {
 
 ## ==滑动窗口解题模板==
 
-![image-20210719154357175](LeetCode的菜鸡实录.assets/image-20210719154357175.png)
+![image-20210719154357175](/images/LeetCode的菜鸡实录.assets/image-20210719154357175.png)
 
 ## [1877、数组中最大数对和的最小值](https://leetcode-cn.com/problems/minimize-maximum-pair-sum-in-array/)
 
@@ -2591,7 +2591,7 @@ class Solution {
 
 上面是当初我做的时候的思路，下面是题解给的：
 
-![image-20210720125100441](LeetCode的菜鸡实录.assets/image-20210720125100441.png)
+![image-20210720125100441](/images/LeetCode的菜鸡实录.assets/image-20210720125100441.png)
 
 可能刚开始看有点绕，但是多看畸变明白了还是很好懂得，大概的思想就类似于跷跷板，这边大的保证了小的就出问题。因为是反证法，只要有一个反例就行了（对于任意拆分方法，不妨假设不存在任何一组u,v使得...），所以$u<v$还有$x_v \geq x_{n+1-k^{'}}$都算是含在任意拆分方法里面了，只要找到一组u,v产生矛盾就行。（不存在任何一组大于等于就是所有u,v都小于）然后推了后面发现并不是都小于的，满足小于所需的情况数量不足，所以就与原假设矛盾。
 
@@ -2605,13 +2605,13 @@ class Solution {
 
 这道题目里面对于原数组的变化实际上就是覆盖次数的描述，一段表示一种覆盖。因为这里是必加的，所以差分数组肯定是前正后负，如果过程大于0，则至少覆盖一次，如果小于等于0则未被覆盖。（这里用差分数组还可以实现到计算覆盖的次数）
 
-![image-20210724003602324](LeetCode的菜鸡实录.assets/image-20210724003602324.png)
+![image-20210724003602324](/images/LeetCode的菜鸡实录.assets/image-20210724003602324.png)
 
-![image-20210724003622092](LeetCode的菜鸡实录.assets/image-20210724003622092.png)
+![image-20210724003622092](/images/LeetCode的菜鸡实录.assets/image-20210724003622092.png)
 
-![image-20210724003633030](LeetCode的菜鸡实录.assets/image-20210724003633030.png)
+![image-20210724003633030](/images/LeetCode的菜鸡实录.assets/image-20210724003633030.png)
 
-![image-20210724003650785](LeetCode的菜鸡实录.assets/image-20210724003650785.png)
+![image-20210724003650785](/images/LeetCode的菜鸡实录.assets/image-20210724003650785.png)
 
 代码如下：
 
@@ -2651,15 +2651,15 @@ class Solution {
 
 常规回溯部分：
 
-![image-20210622145534156](LeetCode的菜鸡实录.assets/image-20210622145534156.png)
+![image-20210622145534156](/images/LeetCode的菜鸡实录.assets/image-20210622145534156.png)
 
 限制不重复部分：
 
-![image-20210622145556189](LeetCode的菜鸡实录.assets/image-20210622145556189.png)
+![image-20210622145556189](/images/LeetCode的菜鸡实录.assets/image-20210622145556189.png)
 
 ==**关于判断条件的解释**==：(!vis[j-1] 这个特别注意理解；因为这里判断进入的是跳过条件，所以如果左侧的未使用，也就是vis[j-1]为false才要跳过，因为一定保证先填的应该是相同字符中未填入的最左)
 
-![image-20210622151633906](LeetCode的菜鸡实录.assets/image-20210622151633906.png)
+![image-20210622151633906](/images/LeetCode的菜鸡实录.assets/image-20210622151633906.png)
 
 ```java
 class Solution {
@@ -2707,7 +2707,7 @@ class Solution {
 
 很久没刷之后居然第一时间没想起这个是动态规划，不过凭借见到几次这种类型的题还是写出来了。题解里面给了两种方法，主要讲下第二种吧。
 
-第一种方法（动态规划）：**连续子数组保证顺序的情况下，对于下一个元素只有选择并加入之前的数组和从它另起一个新数组两种情况。**（这个感觉应该就是动态规划的核心，情况二选一/***多选一***？）既然有了这个限制就可以很简单的得到动态规划的转移方程了，如下：![image-20210717231241837](LeetCode的菜鸡实录.assets/image-20210717231241837.png)
+第一种方法（动态规划）：**连续子数组保证顺序的情况下，对于下一个元素只有选择并加入之前的数组和从它另起一个新数组两种情况。**（这个感觉应该就是动态规划的核心，情况二选一/***多选一***？）既然有了这个限制就可以很简单的得到动态规划的转移方程了，如下：![image-20210717231241837](/images/LeetCode的菜鸡实录.assets/image-20210717231241837.png)
 
 因为是一维的方程，类似于二维方程可以简化空间到一维，一维方程可以简化到一个元素进行维护，从而使得**空间复杂度为O(1)**。（从这个角度说，代码写烦了。）题解代码如下：
 
@@ -2730,15 +2730,15 @@ class Solution {
 
 整体的流程跟归并排序有点像？拆分没啥好说的，就是淡出分就行了，奇数就给个固定的分割，主要是向上回溯的处理：
 
-![image-20210718000342684](LeetCode的菜鸡实录.assets/image-20210718000342684.png)
+![image-20210718000342684](/images/LeetCode的菜鸡实录.assets/image-20210718000342684.png)
 
 四个量的设置呢，看完感觉很有道理，但是让我自己想可能想不到。合并后的区间最大子段和实际上只有三种情况，要么全在左边，要么全在右边，要么横跨两个（从这个角度考虑像是动态规划的有限种情况？）全在左和全在右都好处理，横跨的话就是左边的右跟右边的左拼在一起才可能实现。感觉其实还没有彻底理解，不过这个思路还是应该要有的，如果没记错的话本科上算法课的时候貌似也有碰到过类似的题目。
 
-![image-20210718001531524](LeetCode的菜鸡实录.assets/image-20210718001531524.png)
+![image-20210718001531524](/images/LeetCode的菜鸡实录.assets/image-20210718001531524.png)
 
 分治方法（线段树）主要针对的是大规模查询，对于同一堆数据多次查询处理有利。
 
-![image-20210718002004416](LeetCode的菜鸡实录.assets/image-20210718002004416.png)
+![image-20210718002004416](/images/LeetCode的菜鸡实录.assets/image-20210718002004416.png)
 
 代码如下：
 
@@ -2785,7 +2785,7 @@ class Solution {
 
 这题大方向其实还蛮好想的，字典序的解决，但是实际上一写就全是bug。其实这里面就只是要拐个小弯，不是直接比a和b两个字符串，而是比较ab和ba的拼接之后的字符串的大小。
 
-![image-20210811165357735](LeetCode的菜鸡实录.assets/image-20210811165357735.png)
+![image-20210811165357735](/images/LeetCode的菜鸡实录.assets/image-20210811165357735.png)
 
 然后，思想上就结了，后面都是实现的问题。实现上就是改一下快排的具体实现，下面是python的代码。
 
@@ -2944,41 +2944,41 @@ public:
 
 ## 字节跳动双月模拟笔试
 
-1. ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.04.45.png)
+1. ![](/images/LeetCode的菜鸡实录.assets/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.04.45.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.06.26.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.06.26.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.06.36.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.06.36.png)
 
-2. ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.18.47.png)
+2. ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.18.47.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.18.57.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.18.57.png)
 
-3. ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.26.52.png)
+3. ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.26.52.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.27.02.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.27.02.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.27.11.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.27.11.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.27.19.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.27.19.png)
 
-4. ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.33.10.png)
+4. ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.33.10.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.33.19.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.33.19.png)
 
-   ![](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.33.26.png)
+   ![](/images/LeetCode的菜鸡实录.assets/截屏2022-02-19 19.33.26.png)
 
 ## 网易8/20笔试
 
-1. ![3AAFDF683598D4BBCA695A13F3430CF4](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/3AAFDF683598D4BBCA695A13F3430CF4-1327547.jpg)
+1. ![3AAFDF683598D4BBCA695A13F3430CF4](/images/LeetCode的菜鸡实录.assets/3AAFDF683598D4BBCA695A13F3430CF4-1327547.jpg)
 
-2. ![A73DBE8F5E03460F4355FD2A8735AC19](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/A73DBE8F5E03460F4355FD2A8735AC19-1327567.jpg)
+2. ![A73DBE8F5E03460F4355FD2A8735AC19](/images/LeetCode的菜鸡实录.assets/A73DBE8F5E03460F4355FD2A8735AC19-1327567.jpg)
 
-3. ![4B461EEA523E771D14692F0EA3854F9E](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/4B461EEA523E771D14692F0EA3854F9E-1327595.jpg)
+3. ![4B461EEA523E771D14692F0EA3854F9E](/images/LeetCode的菜鸡实录.assets/4B461EEA523E771D14692F0EA3854F9E-1327595.jpg)
 
    位运算从高到低。刚开始所有的都放在一个set里面，然后从最高位往下判断；如果set中的数超过k个并且当前位有超过k个数为1，则缩减set使之只保留当前位为1的数；如果set中的数超过k个，但当前位为1的数不足k个，则不缩减set，继续判断下一位。直到某一时刻，set中的数不足k个，那么就在上一位的set中随机选k个就得到结果。（因为set中的元素数量只会减少或不变，所以当第一次出现不足k个就意味着后面那些位全是0了，所以不用遍历完每一位，可以提前剪枝）
 
-4. ![6F3FA76777FAC2F560434DC289ACA39E](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/6F3FA76777FAC2F560434DC289ACA39E-1327611.jpg)
+4. ![6F3FA76777FAC2F560434DC289ACA39E](/images/LeetCode的菜鸡实录.assets/6F3FA76777FAC2F560434DC289ACA39E-1327611.jpg)
 
 [题解参考1](https://www.nowcoder.com/discuss/1022172)
 
@@ -3452,7 +3452,7 @@ class Solution {
 
 官方题解里面还有个迭代的版本，感觉特别难理解，如果后面再看可以考虑按评论里的这个理解。
 
-![image-20220701180406705](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220701180406705.png)
+![image-20220701180406705](/images/LeetCode的菜鸡实录.assets/image-20220701180406705.png)
 
 ### 面试题8：二叉树的下一个节点
 
@@ -4095,9 +4095,9 @@ class Solution {
 
 这道题目感觉书上写的不是很好，直接参考网上leetcode的题解吧。
 
-![image-20220528225545320](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220528225545320.png)
+![image-20220528225545320](/images/LeetCode的菜鸡实录.assets/image-20220528225545320.png)
 
-![image-20220528225604462](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220528225604462.png)
+![image-20220528225604462](/images/LeetCode的菜鸡实录.assets/image-20220528225604462.png)
 
 ```c++
 class Solution {
@@ -4128,7 +4128,7 @@ public:
 
 内层循环还可以继续优化，变成循环到<=i/2
 
-![image-20220528235409306](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220528235409306.png)
+![image-20220528235409306](/images/LeetCode的菜鸡实录.assets/image-20220528235409306.png)
 
 优化之后的题解：
 
@@ -4164,7 +4164,7 @@ dp[i]长度为i的绳子剪成至少两段的最大乘积，因为长度为i，�
 
 另外leetcode题解里面有一个贪心详细证明的。
 
-![image-20220529004757417](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220529004757417.png)
+![image-20220529004757417](/images/LeetCode的菜鸡实录.assets/image-20220529004757417.png)
 
 本题实现（2022/07/08）：leetcode——[剑指 Offer 14- I. 剪绳子](https://leetcode.cn/problems/jian-sheng-zi-lcof/)
 
@@ -4424,7 +4424,7 @@ public class Solution {
 2. 当错误发生时设置一个全局变量
 3. 异常：程序正常运行的代码块（try模块）和处理异常的代码块（catch模块）。C语言不支持异常。在抛出异常的时候，程序的执行会打乱正常的顺序，对程序的性能有很大的影响。
 
-![1654178837937](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/1654178837937.jpg)
+![1654178837937](/images/LeetCode的菜鸡实录.assets/1654178837937.jpg)
 
 ### 面试题16：数值的整数次方
 
@@ -4665,7 +4665,7 @@ class Solution {
 
 还是看题解比较好，这个书上的其实写的也是递归，而且还是用的c++，跟java差别蛮大的。题解里面用动态规划做的思路比较好（但不会，摆）
 
-![image-20220714000903760](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220714000903760.png)
+![image-20220714000903760](/images/LeetCode的菜鸡实录.assets/image-20220714000903760.png)
 
 ```java
 class Solution {
@@ -4906,11 +4906,11 @@ class Solution {
 
 这里其实还有一个巧妙的方法可以找到入口，但是这个方法可能走的距离会比在环里面一圈要更长。
 
-![fig1](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/jianzhi_II_022_fig1.png)
+![fig1](/images/LeetCode的菜鸡实录.assets/jianzhi_II_022_fig1.png)
 
-![image-20220604201533273](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220604201533273.png)
+![image-20220604201533273](/images/LeetCode的菜鸡实录.assets/image-20220604201533273.png)
 
-![image-20220604201550329](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220604201550329.png)
+![image-20220604201550329](/images/LeetCode的菜鸡实录.assets/image-20220604201550329.png)
 
 ```java
 public class Solution {
@@ -7136,15 +7136,15 @@ class Solution {
 
 这个判断肯定是根据每一位上的值分开算得，因为如果要一起算，像11或者111这种绝对就会出问题，因此每次只管当前的数位。根据n在当前数位上的值的不同，当前位置导致可能出现的1的次数有所区别。首先是n在当前位上是0，这时候只有比它小的数才可能在当前位上出现0，而这个比它小的数有多少是由最高位和数位决定的，数位决定了比例，最高位决定了数量。
 
-![image-20220611224113514](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220611224113514.png)
+![image-20220611224113514](/images/LeetCode的菜鸡实录.assets/image-20220611224113514.png)
 
 如果n在当前位是1，那么可能出现的次数就需要和低位牵扯下了，因为可以当前位上最终是1，再走过低位个数。
 
-![image-20220611224303579](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220611224303579.png)
+![image-20220611224303579](/images/LeetCode的菜鸡实录.assets/image-20220611224303579.png)
 
 如果n在当前位上是2~9，那么就相当于都肯定越过了1了，这时候当前位出现1的情况是填满的，因此直接+1就行。
 
-![image-20220611224359169](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220611224359169.png)
+![image-20220611224359169](/images/LeetCode的菜鸡实录.assets/image-20220611224359169.png)
 
 ```java
 class Solution {
@@ -7403,7 +7403,7 @@ class Solution {
 
 动态规划方程：（用 f(i) 表示以第 i 位结尾的前缀串翻译的方案数）
 
-![image-20220612214241731](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220612214241731.png)
+![image-20220612214241731](/images/LeetCode的菜鸡实录.assets/image-20220612214241731.png)
 
 动态规划边界条件：f(-1)=0；f(0)=1
 
@@ -7858,7 +7858,7 @@ $(x-k-1)\%n$
 
 通过这个映射规则，可以得到如下的递推关系：
 
-![image-20220620130812444](/Users/liruiqi/class/markdown_note/LeetCode的菜鸡实录.assets/image-20220620130812444.png)
+![image-20220620130812444](/images/LeetCode的菜鸡实录.assets/image-20220620130812444.png)
 
 然后就可以使用循环实现了，代码还是蛮简单的。
 
