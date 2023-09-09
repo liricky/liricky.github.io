@@ -53,3 +53,9 @@ kubernetes + docker
 ## kata
 
 框架结构：
+
+![image-20230910003410670](../images/kubernetes.assets/image-20230910003410670.png)
+
+![image-20230910003314799](../images/kubernetes.assets/image-20230910003314799.png)
+
+![image-20230910003334194](../images/kubernetes.assets/image-20230910003334194.png)

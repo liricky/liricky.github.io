@@ -71,7 +71,7 @@ func main(){
 }
 ```
 
-![img](/images/Golang见习.assets/309B49DC-B872-4BFA-B8D8-EB38A2AF1397.png)
+![img](../images/Golang见习.assets/309B49DC-B872-4BFA-B8D8-EB38A2AF1397.png)
 
 ## 循环结构
 
@@ -98,7 +98,7 @@ func main(){
 // 如果那个标签没有使用到的话，那么标签不用加，否则报错：定义未使用
 ```
 
-![img](/images/Golang见习.assets/img.png)
+![img](../images/Golang见习.assets/img.png)
 
 #### continue
 
@@ -120,7 +120,7 @@ func main(){
 }
 ```
 
-![img](/images/Golang见习.assets/img1.png)
+![img](../images/Golang见习.assets/img1.png)
 
 ## 函数
 
@@ -161,7 +161,7 @@ func main(){
 
 执行过程
 
-![img](/images/Golang见习.assets/img2.png)
+![img](../images/Golang见习.assets/img2.png)
 
 ### defer函数
 
@@ -169,9 +169,9 @@ func main(){
 
 比如你想关闭某个使用的资源，在使用的时候直接随手defer，因为defer有延迟执行机制（函数执行完毕再执行defer压入栈的语句），所以你用完随手写了关闭，比较省心，省事
 
-![image-20230421162553501](/images/Golang见习.assets/image-20230421162553501.png)
+![image-20230421162553501](../images/Golang见习.assets/image-20230421162553501.png)
 
-![image-20230421162647972](/images/Golang见习.assets/image-20230421162647972.png)
+![image-20230421162647972](../images/Golang见习.assets/image-20230421162647972.png)
 
 ## 数组
 
@@ -200,8 +200,8 @@ func main(){
 
 Go中数组属值类型，在默认情况下是值传递，因此会进行值拷贝。
 
-![image-20230501180351019](/images/Golang见习.assets/image-20230501180351019.png)
+![image-20230501180351019](../images/Golang见习.assets/image-20230501180351019.png)
 
 如想在其它函数中，去修改原来的数组，可以使用引用传递（指针方式）。
 
-![image-20230501180605124](/images/Golang见习.assets/image-20230501180605124.png)
+![image-20230501180605124](../images/Golang见习.assets/image-20230501180605124.png)
