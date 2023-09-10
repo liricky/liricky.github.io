@@ -59,3 +59,9 @@ kubernetes + docker
 ![image-20230910003314799](../images/kubernetes.assets/image-20230910003314799.png)
 
 ![image-20230910003334194](../images/kubernetes.assets/image-20230910003334194.png)
+
+![image-20230910195322478](../images/kubernetes.assets/image-20230910195322478.png)
+
+![image-20230910222805117](../images/kubernetes.assets/image-20230910222805117.png)
+
+![image-20230910223009441](../images/kubernetes.assets/image-20230910223009441.png)
