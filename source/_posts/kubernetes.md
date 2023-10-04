@@ -65,3 +65,13 @@ kubernetes + docker
 ![image-20230910222805117](../images/kubernetes.assets/image-20230910222805117.png)
 
 ![image-20230910223009441](../images/kubernetes.assets/image-20230910223009441.png)
+
+## Alpine
+
+[Docker的几种精简版本Buster、Alpine、Stretch比较](https://zhuanlan.zhihu.com/p/374508641)
+
+alpine是Alpine Linux操作系统，它是一个独立发行版本，相比较Debian操作系统来说Alpine更加轻巧，而通过Docker镜像搭建微服务倡导的就是一个“轻量级”概念，所以很多语言、应用也都发布了Alpine版本的Docker基础镜像。
+
+[Alpine Linux介绍](https://zhuanlan.zhihu.com/p/466105234)
+
+alpine是一个轻量级的Linux发行版本，轻量级不仅体现在其占用空间的大小，还因为他没有图形化界面，只有命令行界面。 这个发行版本与我们常见的发现版本不同，其他版版本基本在安装完基本配置之后就可以使用了，而且基本配置如：磁盘，时区等都可以通过图形化的方式去点击进行配置，alpine需要我们在命令行进行手动配置
