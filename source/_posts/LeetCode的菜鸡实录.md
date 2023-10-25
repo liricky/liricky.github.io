@@ -2373,6 +2373,52 @@ class Solution {
 
 说难其实第一层弯转过来之后也不难，总的来说还是这类问题理解不到位，后续这题最好还是补一下，可以结合494一起理解。
 
+## [1155. 掷骰子等于目标和的方法数](https://leetcode.cn/problems/number-of-dice-rolls-with-target-sum/description/)
+
+这题其实状态的转移是想到了的，但思路只写了递归，肯定超时的。然后自己想的时候，状态转移的DP不知道咋定义，想的是个三维的。
+
+状态转移方程：$f(i,j)$表示用$i$个骰子投掷出和为$j$的方法数
+
+$f(i,j)=\sum^{k}_{x=1}f(i-1,j-x)$
+
+边界条件：$f(0,0)=1$和$f(i,j)=0$ if $j<0$
+
+最终答案为$f(n,target)$
+
+明确状态转移方程之后其实就简单了，然后倒序遍历也是DP常规的处理思路。
+
+```python
+class Solution:
+    def numRollsToTarget(self, n: int, k: int, target: int) -> int:
+        dp = [1]
+        for i in range(target):
+            dp.append(0)
+        for i in range(n):
+            for j in range(target,0,-1):
+                dp[j] = 0  // 这一步不能少，一开始处理的时候就是漏了，要先清空当前位的值，不然后面+=会影响到
+                for m in range(max(j-k,0),j):
+                    dp[j] += dp[m]
+                    dp[j] %= (10**9 + 7)
+            dp[0] = 0
+        return dp[-1]
+```
+
+这里其实还有一种写法是把$dp[0]=0$直接合并到循环里面，就是下面这种。
+
+```python
+class Solution:
+    def numRollsToTarget(self, n: int, k: int, target: int) -> int:
+        mod = 10**9 + 7
+        f = [1] + [0] * target
+        for i in range(1, n + 1):
+            for j in range(target, -1, -1):
+                f[j] = 0
+                for x in range(1, k + 1):
+                    if j - x >= 0:
+                        f[j] = (f[j] + f[j - x]) % mod
+        return f[target]
+```
+
 ## [1239、串联字符串的最大长度](https://leetcode-cn.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/)
 
 想到了位运算，也想到了题解的第二种迭代+位运算的方法，但不会写....
@@ -2640,6 +2686,77 @@ class Solution {
 ### 前缀和
 
 关于前缀和，这个其实也在题解里面看到很多次了，如果有机会补在这里
+
+## [2698. 求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer/)
+
+真烦哪，我好菜啊！
+
+这道题，问题的转换其实很简单，最后就变成一个字符串切分成多个连续子串求和能否为目标值。
+
+然后dfs的那种思路是真没想到，思路上有沾到过一点递归，但是还是没想出来，看了点题解之后用自己理解的写了。
+
+自己写的屎：
+
+```python
+class Solution:
+    def punishmentNumber(self, n: int) -> int:
+        sum = 0
+        for i in range(1,n+1):
+            num = 1
+            temp = i
+            while temp//10:
+                num += 1
+                temp //= 10
+            // 上面这个其实是用位数做了限制条件，和为2位，不可能加数为3位
+            string = str(i**2)
+            if self.check(string, num, i):
+                sum += i**2
+        return sum
+
+    def check(self, string: str, num: int, target: int) -> bool:
+        if len(string) == 0:
+            return False
+        if target == int(string):
+            return True
+        if target > int(string):
+            return False
+        temp = 0
+        for i in range(num):
+            if i == len(string):
+                return False
+            temp *= 10
+            temp += int(string[i])
+            if self.check(string[i+1:], num, target - temp):
+               return True
+        return False
+```
+
+check其实就是一个字符串string，切分最多不超过前num位，剩下的字符串能否达到新的目标值。其实这里面一堆都可以优化。
+
+题解：
+
+```python
+class Solution:
+    def punishmentNumber(self, n: int) -> int:
+        def dfs(s: str, pos: int, tot: int, target: int) -> bool:
+            if pos == len(s):  // 整个字符串s都遍历完了
+                return tot == target
+            sum = 0
+            for i in range(pos, len(s)):
+                sum = sum * 10 + int(s[i])
+                if sum + tot > target:  // 这里和自己写的边界思想不同，用是否超过target作为条件
+                    break  // 只要超过就不用继续向后了，因为肯定更超过target值
+                if dfs(s, i + 1, sum + tot, target):  // 没超过target值还有希望，进去博一博
+                    return True
+            return False
+        res = 0
+        for i in range(1, n + 1):
+            if dfs(str(i * i), 0, 0, i):
+                res += i * i
+        return res
+```
+
+这里面的dfs就是一个字符串s，前pos位求得的和为tot，对剩下的位进行计算，能否达到target值。
 
 ## [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/)
 
