@@ -2687,6 +2687,126 @@ class Solution {
 
 关于前缀和，这个其实也在题解里面看到很多次了，如果有机会补在这里
 
+## [2520. 统计能整除数字的位数](https://leetcode.cn/problems/count-the-digits-that-divide-a-number/)
+
+真得就是模拟...自己还在那边想了半天优化
+
+题解：
+
+```python
+class Solution:
+    def countDigits(self, num: int) -> int:
+        return sum(num % int(i) == 0 for i in str(num))
+```
+
+这个题解反正思路也没啥可探讨的，无非就是python写法怎么取巧
+
+自己想的，感觉是优化了一点点的...
+
+首先是如果每一位都需要做判断的话，会有很多重复计算，因此这里想到的是以空间换时间，就是我先把答案算好记下来。（其实最开始还用位运算想更快一点...）
+
+然后这里写的时候有一个问题，就是被2整除的不代表被4整除，被4整除的一定能被2整除。这里面的逻辑关系要理清楚。
+
+```python
+class Solution:
+    def countDigits(self, num: int) -> int:
+        num_list = [0,1,0,0,0,0,0,0,0,0]
+        if num % 2 == 0:
+            num_list[2] = 1
+        if num % 4 == 0:
+            num_list[4] = 1
+        if num % 8 == 0:
+            num_list[8] = 1
+        if num % 5 == 0:
+            num_list[5] = 1
+        if num % 7 == 0:
+            num_list[7] = 1
+        temp = num
+        count = 0
+        count3 = 0
+        count9 = 0
+        sum = 0
+        flag = num_list[2] == 1
+        while temp != 0:
+            tmp = temp % 10
+            sum += tmp
+            if tmp == 3 or (tmp == 6 and flag):
+                count3 += 1
+            elif tmp == 9:
+                count9 += 1
+            elif num_list[tmp]: 
+                count += 1
+            temp //= 10
+        if sum % 3 == 0:
+            count += count3
+        if sum % 9 == 0:
+            count += count9
+        return count
+```
+
+题解写到一半突然明白为啥速度干不过了，因为自己是默认把它全算了一遍，但是实际上有些数字可能并没有实际出现，相当于做了不必要的计算。继续优化一丢丢：
+
+```python
+class Solution:
+    def countDigits(self, num: int) -> int:
+        num_list = [-1,1,-1,-1,-1,-1,-1,-1,-1,-1]
+        temp = num
+        count = 0
+        count3 = 0
+        count9 = 0
+        sum = 0
+        flag = num_list[2] == 1
+        while temp != 0:
+            tmp = temp % 10
+            if num_list[tmp] == -1:
+                if num >> 1 << 1 == num:
+                    num_list[2] = 1
+                else:
+                    num_list[2] = 0
+                    num_list[4] = 0
+                    num_list[8] = 0
+                if num >> 2 << 2 == num:
+                    num_list[4] = 1
+                    num_list[2] = 1
+                else:
+                    num_list[4] = 0
+                    num_list[8] = 0
+                if num >> 3 << 3 == num:
+                    num_list[8] = 1
+                    num_list[4] = 1
+                    num_list[2] = 1
+                else:
+                    num_list[8] = 0
+                if num % 5 == 0:
+                    num_list[5] = 1
+                if num % 7 == 0:
+                    num_list[7] = 1
+            sum += tmp
+            if tmp == 3 or (tmp == 6 and flag):
+                count3 += 1
+            elif tmp == 6:
+                if num_list[2] == 1:
+                    count3 += 1
+                elif num_list[2] == -1:
+                    if num >> 1 << 1 == num:
+                        num_list[2] = 1
+                        count3 += 1
+                    else:
+                        num_list[2] = 0
+            elif tmp == 9:
+                count9 += 1
+            elif num_list[tmp] == 1: 
+                count += 1
+            temp //= 10
+        if sum % 3 == 0:
+            count += count3
+        if sum % 9 == 0:
+            count += count9
+        return count
+```
+
+相比于上面的，这个其实把数字之间的倍数关系用到了极致，就是算一次得到了结果，就把能获得的信息都记录下来，用来避免后续重复的计算。
+
 ## [2698. 求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer/)
 
 真烦哪，我好菜啊！
