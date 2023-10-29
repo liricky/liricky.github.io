@@ -2462,6 +2462,47 @@ class Solution {
 }
 ```
 
+## [1465. 切割后面积最大的蛋糕](https://leetcode.cn/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/)
+
+这玩意第一反应就是贪心，然后一下子感觉又不会这么简单。仔细分析之后感觉确实是贪心就可以了。因为一开始考虑的$1*7$和$2*3$这种关系，就是某一侧的最大值是不是有可能不是组成最大面积的那个。不过仔细思考之后发现是可以用最大乘最大这个规律的。因为最大的面积如果一条边的大小确定，那另一条边又是垂直切的，所以对于各块来说大小关系是确定的。
+
+自己的实现：
+
+```python
+class Solution:
+    def maxArea(self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:
+        horizontalCuts.sort()
+        verticalCuts.sort()
+        horizontalCuts.insert(0,0)
+        horizontalCuts.append(h)
+        verticalCuts.insert(0,0)
+        verticalCuts.append(w)
+        list1, list2 = [], []
+        for i in range(len(horizontalCuts) - 1):
+            list1.append(horizontalCuts[i + 1] - horizontalCuts[i])
+        for i in range(len(verticalCuts) - 1):
+            list2.append(verticalCuts[i + 1] - verticalCuts[i])
+        max1 = max(list1)
+        max2 = max(list2)
+        return (max1 * max2) % (10**9 + 7)
+```
+
+当然自己写的这个时间肯定还是浪费的，因为要往队列的头上去插东西，虽然对于python来说也就是一行的事情。。。这里反正优化的形式一开始也没想到，然后看了题解之后恍然大悟。
+
+```python
+class Solution:
+    def maxArea(self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:
+        def calMax(arr, boardr):  # 怎么压缩操作的，两个常量不用插队列头
+            res, pre = 0, 0
+            for i in arr:
+                res = max(i - pre, res)
+                pre = i
+            return max(res, boardr - pre)
+        horizontalCuts.sort()
+        verticalCuts.sort()
+        return (calMax(horizontalCuts, h) * calMax(verticalCuts, w)) % (10 ** 9 + 7)
+```
+
 ## [1713、得到子序列的最少操作次数](https://leetcode-cn.com/problems/minimum-operations-to-make-a-subsequence/)
 
 这题感觉太综合太乱了，一堆前置知识。。。就先只抓最长递增子序列讲吧。
@@ -2687,6 +2728,94 @@ class Solution {
 
 关于前缀和，这个其实也在题解里面看到很多次了，如果有机会补在这里
 
+## [2517. 礼盒的最大甜蜜度](https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/)
+
+这题看到的时候，思路反正完全是错的，看了题解之后才写，然后里面的实现还踩了下坑。
+
+看了题解之后自己思考问题的想法：
+
+首先，如果给出了一个价格差，要想确定这个能不能满足是比较简单的（可以在排过序的队列里，从第一个开始找，只要满足一定是可以找到的）。那么问题实际上就会被转化为要怎么样去枚举可能的价格差。确定价格差的步骤一定是走二分查找的，这个也没什么问题。既然要确定是不是满足在排过序的队列里会比较方便，那干脆一开始就直接排一下序得了。这样的话其实价格差的上限和下限都可以得到。上限的话就是价格的最大值减去价格的最小值，下限其实就是最接近的两个价格之差（这个下限其实需要遍历一次列表才能拿到，相较于后面的二分来说并不划算，所以题解里是用了最小有效值作二分查找的下限）
+
+**题解中一个评论的思路：**
+
+```
+最大甜蜜度！看到最大，首先考虑二分。然后瞄一眼时间复杂度，思路方向应该对着呢。
+
+然后考虑check函数怎么写，题目问什么，我们就二分什么。 题目问最大的甜蜜度是什么，因此二分甜蜜度。
+
+那check(mid)中，传入的参数就是甜蜜度。那怎么去check它呢？
+
+我们要挑选的k个礼物中，任意两种糖果价格绝对差的最小值是我们的甜蜜度。我们模拟一下这个过程。遍历整个price数组，为了使我们挑选的礼物足够的多，我们先将数组进行排序，然后从左往右挑选。如果前后两个礼物的价格差大于我们二分的甜蜜度，则认为当前礼物是合法的，立马计入到答案中去。
+```
+
+自己的实现：
+
+```python
+class Solution:
+    def maximumTastiness(self, price: List[int], k: int) -> int:
+        price.sort()
+        min_threashold = 10 ** 9
+        max_threashold = price[-1] - price[0]
+        for i in range(len(price) - 1):
+            min_threashold = min(price[i + 1] - price[i], min_threashold)    
+        while min_threashold <= max_threashold:  # 这么写，结果是也能拿到，但是肯定要多算一次
+            mid = (min_threashold + max_threashold) // 2
+            if self.check_valid(price, mid, k):
+                min_threashold = mid + 1
+            else:
+                max_threashold = mid - 1
+        return max_threashold
+
+    def check_valid(self, price, gap, k):
+        index = 1
+        temp = price[0]
+        while k != 1 and index != len(price):
+            if price[index] - temp >= gap:
+                k -= 1
+                temp = price[index]
+            index += 1
+        return True if k == 1 else False
+```
+
+上面这个自己的实现和题解的实现，区别有三个：第一个是二分下边界的确定；第二个是二分部分；第三个是while的循环。
+
+题解代码：
+
+```python
+class Solution:
+    def maximumTastiness(self, price: List[int], k: int) -> int:
+        price.sort()
+        left, right = 0, price[-1] - price[0]  # 遍历一遍list拿二分的下边界不划算，直接进二分
+        while left < right:  # 二分的模板
+            mid = (left + right + 1) // 2  # 注意+1
+            if self.check(price, k, mid):
+                left = mid  # 因为上面做了+1，所以这里直接mid就行
+            else:
+                right = mid - 1
+        return left  # 上面的操作最终结果就是left
+
+    def check(self, price: List[int], k: int, tastiness: int) -> bool:
+        prev = -inf
+        cnt = 0
+        for p in price:
+            if p - prev >= tastiness:
+                cnt += 1
+                prev = p
+        return cnt >= k
+```
+
+**==二分的模板==**
+
+**==同类型题目的思路：看到最大最小，可以联想二分查找考虑是否可行，然后思考check函数如何实现==**
+
+python中的for和while的速度：for比while在同样**==访问列表获取值的情况下，for的速度优于while==**
+
+[对比python中for和while运行速度的参考案例：](https://zhuanlan.zhihu.com/p/442896327)
+
+在每次循环中，`while` 实际上比 `for` 多执行了两步操作：边界检查和变量 `i` 的自增。即每进行一次循环，while 都会做一次边界检查 (`while i < n`）和自增计算（`i +=1`）。这两步操作都是显式的纯 Python 代码。
+
+`for` 循环不需要执行边界检查和自增操作，没有增加显式的 Python 代码（纯 Python 代码效率低于底层的 C 代码）。当循环的次数足够多，就出现了明显的效率差距。
+
 ## [2520. 统计能整除数字的位数](https://leetcode.cn/problems/count-the-digits-that-divide-a-number/)
 
 真得就是模拟...自己还在那边想了半天优化
@@ -2806,6 +2935,49 @@ class Solution:
 ```
 
 相比于上面的，这个其实把数字之间的倍数关系用到了极致，就是算一次得到了结果，就把能获得的信息都记录下来，用来避免后续重复的计算。
+
+## [2558. 从数量最多的堆取走礼物](https://leetcode.cn/problems/take-gifts-from-the-richest-pile/)
+
+这道题题面看完其实就想到了最大堆，然后剩下的感觉就是模拟计算了。然后在最大堆取出1的时候就能够提前终止。
+
+自己的实现：
+
+```python
+class Solution:
+    def pickGifts(self, gifts: List[int], k: int) -> int:
+        import heapq
+        length = len(gifts)
+        gifts = [-gift for gift in gifts]
+        heapq.heapify(gifts)
+        for i in range(k):
+            old = -heapq.heappop(gifts)
+            if old == 1:
+                return length
+            new = int(old ** 0.5)
+            heapq.heappush(gifts, -new)
+        sum = 0
+        for i in range(length):
+            sum -= heapq.heappop(gifts)
+        return sum
+```
+
+这个里面其实就需要知道一下**==python中的最小堆的库heapq==**，然后需要知道这个库是不支持最大堆的。如果需要用到最大堆，可以在最小堆插入和取出的时候取反，达成最大堆的效果。
+
+官方题解：
+
+```python
+class Solution:
+    def pickGifts(self, gifts: List[int], k: int) -> int:
+        q = [-gift for gift in gifts]
+        heapify(q)
+        while k:
+            x = heappop(q)
+            heappush(q, -int(sqrt(-x)))
+            k -= 1
+        return -sum(q)
+```
+
+思路一毛一样，就是写法上有差异。
 
 ## [2698. 求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer/)
 
