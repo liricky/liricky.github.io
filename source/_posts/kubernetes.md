@@ -17,6 +17,8 @@ kubernetes + docker
 
 [参考资料1](https://blog.csdn.net/weixin_46837396/article/details/122159306)、[参考资料2](https://blog.csdn.net/qq_42527269/article/details/123348981)
 
+### 多Pod通信/访问
+
 
 
 ### 端口映射

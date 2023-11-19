@@ -2419,6 +2419,63 @@ class Solution:
         return f[target]
 ```
 
+## [==1156. 单字符重复子串的最大长度==](https://leetcode.cn/problems/swap-for-longest-repeated-character-substring/)
+
+真得是写得火大加一口老血吐出来，改了半天才实现对了逻辑。
+
+自己实现的其实和这个[题解](https://leetcode.cn/problems/swap-for-longest-repeated-character-substring/solutions/2294588/python3javacgotypescript-yi-ti-yi-jie-sh-uq9g/?envType=daily-question&envId=2023-10-27)比较像，但是写法不好，所以最后又臭又长。题解里说这是双指针，但我感觉应该是三指针？这个思路比较好理解，就是字母数量有限，先扫一遍确定各个字母的数量，然后去扫字符串。但是我想得那个是扫固定的26遍（虽然可以优化跳一些不存在的，但是还是扫n次整个串级别的时间；题解的实现里面除了第一个，后面都不需要再扫整个串了），对应每个字母，但实际上没有必要。题解是整体只扫一遍，并且扫的时候还针对连续字符做了一个跳过（这个跳过其实我的实现里也有做，只是没有能够想到整体只扫一遍的思路）
+
+```python
+class Solution:
+    def maxRepOpt1(self, text: str) -> int:
+        cnt = Counter(text)
+        n = len(text)
+        ans = i = 0
+        while i < n:
+            j = i
+            while j < n and text[j] == text[i]:
+                j += 1
+            l = j - i
+            k = j + 1
+            while k < n and text[k] == text[i]:
+                k += 1
+            r = k - j - 1
+            ans = max(ans, min(l + r + 1, cnt[text[i]]))
+            i = j  
+            # 可以挪到第一次找到的不一样的字符上，因为前面的字符都相同，截掉几个后肯定没已经计算过的长
+        return ans
+```
+
+官方题解也是这个思路，但是描述上解释为滑动窗口。
+
+```python
+class Solution:
+    def maxRepOpt1(self, text: str) -> int:
+        count = Counter(text)
+        res = 0
+        i = 0
+        while i < len(text):
+            # step1: 找出当前连续的一段 [i, j)
+            j = i
+            while j < len(text) and text[j] == text[i]:
+                j += 1
+
+            # step2: 如果这一段长度小于该字符出现的总数，并且前面或后面有空位，则使用 cur_cnt + 1 更新答案
+            cur_cnt = j - i
+            if cur_cnt < count[text[i]] and (j < len(text) or i > 0):
+                res = max(res, cur_cnt + 1)
+
+            # step3: 找到这一段后面与之相隔一个不同字符的另一段 [j + 1, k)，如果不存在则 k = j + 1
+            k = j + 1
+            while k < len(text) and text[k] == text[i]:
+                k += 1
+            res = max(res, min(k - i, count[text[i]]))
+            i = j
+        return res
+```
+
+**==这题肯定得二刷==**
+
 ## [1239、串联字符串的最大长度](https://leetcode-cn.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/)
 
 想到了位运算，也想到了题解的第二种迭代+位运算的方法，但不会写....
