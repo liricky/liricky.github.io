@@ -988,6 +988,46 @@ public:
 
 这两者应该是不存在量级上的快慢的，除了set必须用迭代器之外，其他情况都是下标和迭代器均可的形式。所以在非set的情况下，都使用下标就完事了，不搞幺蛾子。
 
+**二刷：**
+
+这次写的时候实现的思路和上一次的不太一样，直接变成从尾部插了，这个主要是没限制顺序，如果要保留原顺序的话还得是上面的那种做法。
+
+不保证顺序：
+
+```python
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        count = len(nums)
+        index = 0
+        while index < count:
+            if nums[index] == val:
+                nums[count-1], nums[index] = nums[index], nums[count-1]
+                count -= 1
+            else:
+                index += 1
+        return count
+```
+
+[保证顺序（不改变相对位置）](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0027.移除元素.md)：
+
+```python
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        index = -1
+        for i in range(len(nums)):
+            if nums[i] != val:
+                index += 1
+                nums[index] = nums[i]
+        return index + 1
+```
+
+**==核心思想-双指针法（快慢指针法）==**：通过一个快指针和慢指针在一个for循环下完成两个for循环的工作
+
+定义快慢指针
+
+- 快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
+- 慢指针：指向更新 新数组下标的位置
+
 ## [65、有效数字](https://leetcode-cn.com/problems/valid-number/)
 
 其实用暴力的办法写到最后是想到了要用图灵机去做，但是不会，就很真实。
@@ -1421,6 +1461,48 @@ public:
 
 另外这道题目其实也是动态规划范畴里面的一道题，可以通过动态规划的思路来理解，具体的内容等后面复习到动态规划之后再补充。
 
+## [82、删除排序链表中的重复元素 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/)
+
+难受啊
+
+因为原先见过删除重复元素只保留一个，所以中间想到的思路是三指针扫一遍之后，再对着dict重扫一遍，然后也没写出来。
+
+[题解](https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/solutions/678681/fu-xue-ming-zhu-di-gui-die-dai-yi-pian-t-wy0h)：三种思路
+
+1. 递归
+2. 迭代——一次遍历（使用有序这一性质）
+3. 迭代——利用计数，两次遍历（不使用有序这一性质），这个其实就跟自己想到的思路有一丢丢像
+
+```python
+class Solution(object):
+    def deleteDuplicates(self, head):
+        if not head or not head.next:
+            return head
+        dummy = ListNode(0)
+        dummy.next = head
+        pre = dummy
+        cur = head
+        while cur:
+            # 跳过当前的重复节点，使得cur指向当前重复元素的最后一个位置
+            while cur.next and cur.val == cur.next.val:
+                cur = cur.next
+            if pre.next == cur:
+                 # pre和cur之间没有重复节点，pre后移
+                pre = pre.next
+            else:
+                # pre->next指向cur的下一个位置（相当于跳过了当前的重复元素）
+                # 但是pre不移动，仍然指向已经遍历的链表结尾
+                pre.next = cur.next
+            cur = cur.next
+        return dummy.next
+
+链接：https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/solutions/678681/fu-xue-ming-zhu-di-gui-die-dai-yi-pian-t-wy0h/
+```
+
+### 哑节点
+
+代码中用到了一个常用的技巧：dummy 节点，也叫做 **==哑节点==**。它在链表的迭代写法中非常常见，因为对于本题而言，我们可能会删除头结点 head，为了维护一个不变的头节点，所以我们添加了 dummy，让dummy.next = head，这样即使 head 被删了，那么会操作 dummy.next 指向新的链表头部，所以最终返回的也是 dummy.next
+
 ## [125、验证回文串](https://leetcode.cn/problems/valid-palindrome/)
 
 思路很简单的一道题，主要是预处理和判断条件。
@@ -1592,6 +1674,70 @@ class Solution {
 ```
 
 ![image-20210629194912986](../images/LeetCode的菜鸡实录.assets/image-20210629194912986.png)
+
+## [209、长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+
+知道是滑动窗口的问题后其实就明白需要把时间复杂度降低到$O(n)$。反正就是拿两个指针作为窗口的两端去扫，这样就保证是线性的时间复杂度了。
+
+然后自己写的这个实现就属于能跑，但逻辑很乱：
+
+```python
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        left = -1
+        right = -1
+        val = 0
+        res = 10**5+1
+        while right < len(nums) - 1:
+            if left == right:
+                right += 1
+                val = nums[right]
+            elif val < target:
+                right += 1
+                val += nums[right]
+            else:
+                res = min(res, right-left)
+                left += 1
+                val -= nums[left]
+        while left < len(nums) - 1:
+            if val < target:
+                break
+            else:
+                res = min(res, right-left)
+                left += 1
+                val -= nums[left]
+        return res if res <= 10**5 else 0
+```
+
+[题解](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0209.长度最小的子数组.md)：
+
+```python
+class Solution:
+    def minSubArrayLen(self, s: int, nums: List[int]) -> int:
+        l = len(nums)
+        left = 0
+        right = 0
+        min_len = float('inf')
+        cur_sum = 0 #当前的累加值
+        
+        while right < l:
+            cur_sum += nums[right]
+            
+            while cur_sum >= s: # 当前累加值大于目标值
+                min_len = min(min_len, right - left + 1)
+                cur_sum -= nums[left]
+                left += 1
+            
+            right += 1
+        
+        return min_len if min_len != float('inf') else 0
+```
+
+其实上面自己写的那种一开始还忘了最后面的一个while，就是右指针到末尾，但左指针还没到末尾，并且和依然满足大于target的处理。
+
+理思路的时候还是需要当两重循环来思考，只是有了边界范围，并且保证了不会存在回退。
+
+[leetcode题解](https://leetcode.cn/problems/minimum-size-subarray-sum/solutions/305704/chang-du-zui-xiao-de-zi-shu-zu-by-leetcode-solutio/)
 
 ## 239、滑动窗口最大值
 
@@ -1854,6 +2000,107 @@ class Solution {
 }
 ```
 
+## [410、分割数组的最大值](https://leetcode.cn/problems/split-array-largest-sum/)
+
+这题看到的时候想到了是动态规划，但是转移方程还是没写出来。另外二分的想法是部分想到了的，就是拿总和的值去试嘛，但也没细想，就直接看题解了。
+
+首先是第二种二分的思路，这个还是比较好理解的，就相当于是枚举嘛，枚举的目标就是数组的最大和，然后用枚举的值去校验就行了。这个校验的时候，因为要求是连续的，所以每超过一次就增加下计数，最后比较就能得到是否满足条件了。（这个么其实按理应该是要能写出来的）
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        def check(x: int) -> bool:
+            total, cnt = 0, 1
+            for num in nums:
+                if total + num > x:
+                    cnt += 1
+                    total = num
+                else:
+                    total += num
+            return cnt <= m
+
+
+        left = max(nums)
+        right = sum(nums)
+        while left < right:
+            mid = (left + right) // 2
+            if check(mid):
+                right = mid
+            else:
+                left = mid + 1
+
+        return left
+
+链接：https://leetcode.cn/problems/split-array-largest-sum/solutions/345417/fen-ge-shu-zu-de-zui-da-zhi-by-leetcode-solution/
+```
+
+第二种的思路的话就是动态规划了。
+
+没特别理解吧，主要是先得想到`令 f[i][j] 表示将数组的前 i 个数分割为 j 段所能得到的最大连续子数组和的最小值`
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        n = len(nums)
+        f = [[10**18] * (m + 1) for _ in range(n + 1)]
+        sub = [0]
+        for elem in nums:
+            sub.append(sub[-1] + elem)
+        
+        f[0][0] = 0
+        for i in range(1, n + 1):
+            for j in range(1, min(i, m) + 1):
+                for k in range(i):
+                    f[i][j] = min(f[i][j], max(f[k][j - 1], sub[i] - sub[k]))
+        
+        return f[n][m]
+
+链接：https://leetcode.cn/problems/split-array-largest-sum/solutions/345417/fen-ge-shu-zu-de-zui-da-zhi-by-leetcode-solution
+```
+
+## [447、回旋镖的数量](https://leetcode.cn/problems/number-of-boomerangs/)
+
+其实顺序和排列组合那块已经想到了，但是怎么存，怎么枚举还是想得有点问题。自己想的时候变成是存三元组了，然后就需要涉及到匹配超过两个的情况，就很恶心。这里其实就应该把距离想象成以点为中心画一个圆，判断下其它点是不是在上面就行了（这个思路其实有想到）。当然不可能无限去枚举这个圆的大小，那就直接拿点挨个去枚举就行了，并且也不需要在判断距离的时候去考虑哪两个点和拐点匹配，所以核心就是距离拐点为一定距离的点的数量有几个，然后排列组合。
+
+```python
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        num = 0
+        for index, point in enumerate(points):
+            distance_dict = {}
+            for index1, point1 in enumerate(points):
+                if index1 == index:
+                    continue
+                distance = ((points[index][0]-points[index1][0])**2 + (points[index][1]-points[index1][1])**2)**0.5
+                if distance in distance_dict:
+                    distance_dict[distance] += 1
+                else:
+                    distance_dict[distance] = 1
+            for key, value in distance_dict.items():
+                num += value * (value - 1)
+        return num
+```
+
+题解：
+
+```python
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        ans = 0
+        for p in points:
+            cnt = defaultdict(int)
+            for q in points:  # 这里不用特地跳拐点自身，因为已经说了是互不相同的点
+                dis = (p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1])  # 距离也不用再开方
+                cnt[dis] += 1
+            for m in cnt.values():  # key也可以不用拿，只在乎value个数
+                ans += m * (m - 1)
+        return ans
+```
+
+**==在python中，dict就是哈希表==**
+
+[**==Python collections模块之defaultdict()详解==**](https://blog.csdn.net/chl183/article/details/107446836)
+
 ## [474、一和零](https://leetcode-cn.com/problems/ones-and-zeroes/)
 
 dp问题，题还是做得不够多，得补；思路对了，但是手法上有大问题。
@@ -1997,6 +2244,84 @@ class Solution {
     }
 }
 ```
+
+## [704、二分查找](https://leetcode.cn/problems/binary-search/)
+
+题就是基础的二分，没啥可说的。
+
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] > target:
+                right = mid - 1
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                return mid
+        return -1
+```
+
+- 二分的查找范围：left <= right
+- 查找结束条件：left > right
+
+### ==二分法的使用前提：==
+
+- 有序数组
+- 数组中无重复元素（因为一旦有重复元素，使用二分查找法返回的元素下标可能不是唯一的）
+
+### [==二分法的两种实现==](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0704.二分查找.md)：
+
+1. $[left,right]$：定义 target 是在一个在左闭右闭的区间里
+
+   - while (left <= right) 要使用 <= ，因为left == right是有意义的，所以使用 <=
+   - if (nums[middle] > target) right 要赋值为 middle - 1，因为当前这个nums[middle]一定不是target，那么接下来要查找的左区间结束下标位置就是 middle - 1
+
+   ```python
+   class Solution:
+       def search(self, nums: List[int], target: int) -> int:
+           left, right = 0, len(nums) - 1  # 定义target在左闭右闭的区间里，[left, right]
+   
+           while left <= right:
+               middle = left + (right - left) // 2
+               
+               if nums[middle] > target:
+                   right = middle - 1  # target在左区间，所以[left, middle - 1]
+               elif nums[middle] < target:
+                   left = middle + 1  # target在右区间，所以[middle + 1, right]
+               else:
+                   return middle  # 数组中找到目标值，直接返回下标
+           return -1  # 未找到目标值
+   ```
+
+2. $[left,right)$：定义 target 是在一个在左闭右开的区间里
+
+   - while (left < right)，这里使用 < ,因为left == right在区间[left, right)是没有意义的
+   - if (nums[middle] > target) right 更新为 middle，因为当前nums[middle]不等于target，去左区间继续寻找，而寻找区间是左闭右开区间，所以right更新为middle，即：下一个查询区间不会去比较nums[middle]
+
+   ```python
+   class Solution:
+       def search(self, nums: List[int], target: int) -> int:
+           left, right = 0, len(nums)  # 定义target在左闭右开的区间里，即：[left, right)
+   
+           while left < right:  # 因为left == right的时候，在[left, right)是无效的空间，所以使用 <
+               middle = left + (right - left) // 2
+   
+               if nums[middle] > target:
+                   right = middle  # target 在左区间，在[left, middle)中
+               elif nums[middle] < target:
+                   left = middle + 1  # target 在右区间，在[middle + 1, right)中
+               else:
+                   return middle  # 数组中找到目标值，直接返回下标
+           return -1  # 未找到目标
+   ```
+
+二分的话其实不会直接考很直白的题，一般都是配合着别的算法一起。比如贪心+二分，所以主要是要确定对什么做二分。
+
+应用案例可参考：2517 礼盒最大甜蜜度
 
 ## [752、打开转盘锁](https://leetcode-cn.com/problems/open-the-lock/)
 
@@ -2340,6 +2665,73 @@ class Solution {
 
 ![image-20210610014017019](../images/LeetCode的菜鸡实录.assets/image-20210610014017019.png)
 
+## [977、有序数组的平方](https://leetcode.cn/problems/squares-of-a-sorted-array/)
+
+这题其实读题面的时候没理解，什么叫“非递减顺序”，反正结合给的示例理解了下，应该就是小于等于号连接吧。然后又因为知道是双指针的题，所以思路很好想。
+
+正常暴力的做法肯定就是先平方后排序，那么时间复杂度就会到$O(nlog_n)$，但实际上由于存在大小关系，所以是能将时间复杂度压缩到$O(n)$的。
+
+因为结果中还是要求非递减顺序，所以相当于要找数组中绝对值最小的数（相等的里面最后一个）。
+
+按照这个思路，自己实现了以下的代码：
+
+```python
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        last = 10**5
+        for index in range(len(nums)):
+            if abs(nums[index]) > abs(last):
+                break
+            else:
+                last = nums[index]
+        right = index
+        left = index - 1
+        result_list = []
+        while left >= 0 and right < len(nums):
+            if abs(nums[left]) < abs(nums[right]):
+                result_list.append(nums[left]**2)
+                left -= 1
+            else:
+                result_list.append(nums[right]**2)
+                right += 1
+        while left >= 0:
+            result_list.append(nums[left]**2)
+            left -= 1
+        while right < len(nums):
+            result_list.append(nums[right]**2)
+            right += 1
+        return result_list
+```
+
+[官方题解](https://leetcode.cn/problems/squares-of-a-sorted-array/solutions/447736/you-xu-shu-zu-de-ping-fang-by-leetcode-solution/)里面的双指针给了两种思路：
+
+1. 根据正数和负数将nums拆成两半，那么在平方之后，两个数组均满足降序（或等于），然后依次比较并插入结果中即可
+
+2. 设置头尾为双指针，然后倒序插入结果中。（好处在于不用处理边界情况）
+
+   ```python
+   class Solution:
+       def sortedSquares(self, nums: List[int]) -> List[int]:
+           n = len(nums)
+           ans = [0] * n
+           
+           i, j, pos = 0, n - 1, n - 1
+           while i <= j:
+               if nums[i] * nums[i] > nums[j] * nums[j]:
+                   ans[pos] = nums[i] * nums[i]
+                   i += 1
+               else:
+                   ans[pos] = nums[j] * nums[j]
+                   j -= 1
+               pos -= 1
+           
+           return ans
+   
+   链接：https://leetcode.cn/problems/squares-of-a-sorted-array/solutions/447736/you-xu-shu-zu-de-ping-fang-by-leetcode-solution/
+   ```
+
+第一种思路其实和自己写的差不多，第二种的话也有想到，但倒序插入这个没想好，其实就是知道结果有多长，知道最后数组最后一位的下标，然后从尾往前插。
+
 ## [1049、最后一块石头的重量 II](https://leetcode-cn.com/problems/last-stone-weight-ii/)
 
 这道题和494明明就是一毛一样啊，然后没做出来，吐了好吧。
@@ -2373,7 +2765,7 @@ class Solution {
 
 说难其实第一层弯转过来之后也不难，总的来说还是这类问题理解不到位，后续这题最好还是补一下，可以结合494一起理解。
 
-## [1155. 掷骰子等于目标和的方法数](https://leetcode.cn/problems/number-of-dice-rolls-with-target-sum/description/)
+## [1155、掷骰子等于目标和的方法数](https://leetcode.cn/problems/number-of-dice-rolls-with-target-sum/description/)
 
 这题其实状态的转移是想到了的，但思路只写了递归，肯定超时的。然后自己想的时候，状态转移的DP不知道咋定义，想的是个三维的。
 
@@ -2419,7 +2811,7 @@ class Solution:
         return f[target]
 ```
 
-## [==1156. 单字符重复子串的最大长度==](https://leetcode.cn/problems/swap-for-longest-repeated-character-substring/)
+## [==1156、单字符重复子串的最大长度==](https://leetcode.cn/problems/swap-for-longest-repeated-character-substring/)
 
 真得是写得火大加一口老血吐出来，改了半天才实现对了逻辑。
 
@@ -2519,7 +2911,7 @@ class Solution {
 }
 ```
 
-## [1465. 切割后面积最大的蛋糕](https://leetcode.cn/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/)
+## [1465、切割后面积最大的蛋糕](https://leetcode.cn/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/)
 
 这玩意第一反应就是贪心，然后一下子感觉又不会这么简单。仔细分析之后感觉确实是贪心就可以了。因为一开始考虑的$1*7$和$2*3$这种关系，就是某一侧的最大值是不是有可能不是组成最大面积的那个。不过仔细思考之后发现是可以用最大乘最大这个规律的。因为最大的面积如果一条边的大小确定，那另一条边又是垂直切的，所以对于各块来说大小关系是确定的。
 
@@ -2785,7 +3177,66 @@ class Solution {
 
 关于前缀和，这个其实也在题解里面看到很多次了，如果有机会补在这里
 
-## [2517. 礼盒的最大甜蜜度](https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/)
+## [2171、拿出最少数目的魔法豆](https://leetcode.cn/problems/removing-minimum-number-of-magic-beans/)
+
+这题其实看了下提示后思路是ok了，但是死脑筋，没彻底转过来。
+
+先说下核心思想吧，最终就是分两拨，一拨是0，另一拨是原本中的某一个值。
+
+为啥一定是原本袋中有的数目作为另一拨的值，如果比某一个值更小，那一定比它大的都要多拿，必定不是最优。
+
+当我们能枚举另一拨中的值时，要拿出的数目其实可以反推出来。因为原始豆子的总数知道，结果的豆子总数也能算出来，相减就是拿出来的数目。
+
+那为了能更快的计算出有多少比它大的，最简单的方式就是排序。（这里自己一开始写的时候是想用hash表统计，但是发现无序的情况下还是不方便算，所以又对key排序，其实直接对整个beans的list排个序就行了）
+
+自己的丑陋代码：
+
+```python
+class Solution:
+    def minimumRemoval(self, beans: List[int]) -> int:
+        num_dict = {}
+        max_num = 0
+        sum_num = 0
+        for number in beans:
+            sum_num += number
+            max_num = max(max_num, number)
+            if number in num_dict.keys():
+                num_dict[number] += 1
+            else:
+                num_dict[number] = 1
+        min_number = sum_num
+        count1 = 0
+        index = 0
+        key_list = list(num_dict.keys())
+        if len(key_list) == 1:
+            return 0
+        key_list.sort()
+        for key in key_list:
+            temp_number = sum_num - key_list[index]*(len(beans) - count1)
+            min_number = min(min_number, temp_number)
+            count1 += num_dict[key]
+            index += 1
+        return min_number
+```
+
+题解：
+
+```python
+class Solution:
+    def minimumRemoval(self, beans: List[int]) -> int:
+        n = len(beans)
+        beans.sort()
+        total = sum(beans) # 豆子总数
+        res = total # 最少需要移除的豆子数
+        for i in range(n):
+            # 大于等于自己的所有beans最终都会拿成自己，其余会归零
+            res = min(res, total - beans[i] * (n - i)) # 这里面隐含了多个同值的一定第一个最划算
+        return res
+
+链接：https://leetcode.cn/problems/removing-minimum-number-of-magic-beans/solutions/1270306/na-chu-zui-shao-shu-mu-de-mo-fa-dou-by-l-dhsl/
+```
+
+## [2517、礼盒的最大甜蜜度](https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/)
 
 这题看到的时候，思路反正完全是错的，看了题解之后才写，然后里面的实现还踩了下坑。
 
@@ -2861,6 +3312,8 @@ class Solution:
         return cnt >= k
 ```
 
+[题解分析（带图）](https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/solutions/2292300/javapython3tan-xin-pai-xu-er-fen-cha-zha-fxvv/)
+
 **==二分的模板==**
 
 **==同类型题目的思路：看到最大最小，可以联想二分查找考虑是否可行，然后思考check函数如何实现==**
@@ -2873,7 +3326,7 @@ python中的for和while的速度：for比while在同样**==访问列表获取值
 
 `for` 循环不需要执行边界检查和自增操作，没有增加显式的 Python 代码（纯 Python 代码效率低于底层的 C 代码）。当循环的次数足够多，就出现了明显的效率差距。
 
-## [2520. 统计能整除数字的位数](https://leetcode.cn/problems/count-the-digits-that-divide-a-number/)
+## [2520、统计能整除数字的位数](https://leetcode.cn/problems/count-the-digits-that-divide-a-number/)
 
 真得就是模拟...自己还在那边想了半天优化
 
@@ -2993,7 +3446,7 @@ class Solution:
 
 相比于上面的，这个其实把数字之间的倍数关系用到了极致，就是算一次得到了结果，就把能获得的信息都记录下来，用来避免后续重复的计算。
 
-## [2558. 从数量最多的堆取走礼物](https://leetcode.cn/problems/take-gifts-from-the-richest-pile/)
+## [2558、从数量最多的堆取走礼物](https://leetcode.cn/problems/take-gifts-from-the-richest-pile/)
 
 这道题题面看完其实就想到了最大堆，然后剩下的感觉就是模拟计算了。然后在最大堆取出1的时候就能够提前终止。
 
@@ -3036,7 +3489,59 @@ class Solution:
 
 思路一毛一样，就是写法上有差异。
 
-## [2698. 求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer/)
+## [2645、构造有效字符串的最少插入数](https://leetcode.cn/problems/minimum-additions-to-make-valid-string/)
+
+```python
+# TODO
+# 懒病犯了
+```
+
+这题其实题面都没读明白，和前一天的2696不一样，因为字符串匹配上之后是不删的。
+
+第三种题解的思路其实想到一点了，就是先想办法求最终的组数再减去字符串长度。
+
+留个坑在这，以后填吧。还有另两种思路也得看下。
+
+## [2696、删除子串后的字符串最小长度](https://leetcode.cn/problems/minimum-string-length-after-removing-substrings/)
+
+这都没想到写的暴力...
+
+想到栈就没结束了
+
+```python
+class Solution:
+    def minLength(self, s: str) -> int:
+        stack = []
+        for i in s:
+            if len(stack) == 0:
+                stack.append(i)
+            else:
+                if stack[-1] + i == "AB" or stack[-1] + i == "CD":
+                    stack = stack[:-1]
+                else:
+                    stack.append(i)
+        return len(stack)
+```
+
+官方题解：
+
+这个写法上更巧妙，逻辑也合并了下
+
+```python
+class Solution:
+    def minLength(self, s: str) -> int:
+        stack = []
+        for c in s:
+            stack.append(c)
+            if len(stack) >= 2 and ((stack[-2] == 'A' and stack[-1] == 'B') or (stack[-2] == 'C' and stack[-1] == 'D')):
+                stack.pop()
+                stack.pop()
+        return len(stack)
+
+链接：https://leetcode.cn/problems/minimum-string-length-after-removing-substrings/solutions/2591242/shan-chu-zi-chuan-hou-de-zi-fu-chuan-zui-968c/
+```
+
+## [2698、求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer/)
 
 真烦哪，我好菜啊！
 
@@ -3106,6 +3611,184 @@ class Solution:
 ```
 
 这里面的dfs就是一个字符串s，前pos位求得的和为tot，对剩下的位进行计算，能否达到target值。
+
+## [2707、字符串中的额外字符](https://leetcode.cn/problems/extra-characters-in-a-string/)
+
+看题面其实已经知道是个DP了，但是还是没想出来DP方程是啥。看了提示后确定的，dp[i]表示s[0:i]的最优划分剩余字符数，然后就明确从前往后扫就可以了。在每个i中，把所有dictionary中的word都扫一遍，如果是末尾，那么就可以往前取捷径比最小值。
+
+自己写的：
+
+```python
+class Solution:
+    def minExtraChar(self, s: str, dictionary: List[str]) -> int:
+        dp = [0 for _ in range(len(s) + 1)]
+        for i in range(1, len(s) + 1):
+            dp[i] = dp[i-1] + 1
+            for word in dictionary:
+                word_len = len(word)
+                if i - word_len < 0:
+                    continue
+                elif s[i-word_len:i] == word:
+                    dp[i] = min(dp[i],dp[i-word_len])
+        return dp[len(s)]
+```
+
+[官方题解](https://leetcode.cn/problems/extra-characters-in-a-string/solutions/2590667/zi-fu-chuan-zhong-de-e-wai-zi-fu-by-leet-f0lu/)：
+
+**题解中还涉及到一个字典树的优化**
+
+```python
+class Trie:
+    def __init__(self):
+        self.children = [None for _ in range (26)]
+        self.isEnd = False
+    
+    def insert(self, word):
+        node = self
+        for ch in word:
+            k = ord(ch) - ord('a')
+            if node.children[k] == None:
+                node.children[k] = Trie()
+            node = node.children[k]
+        node.isEnd = True
+
+    def track(self, node, ch):
+        k = ord(ch) - ord('a')
+        if node == None or node.children[k] == None:
+            return None, False
+        node = node.children[k]
+        return node, node.isEnd
+
+class Solution:
+    def minExtraChar(self, s: str, dictionary: List[str]) -> int:
+        n = len(s)
+        d = [sys.maxsize] * (n + 1)
+        d[0] = 0
+        trie = Trie()
+        for e in dictionary:
+            trie.insert(reversed(e))
+        for i in range (1, n + 1):
+            d[i] = d[i - 1] + 1
+            node = trie
+            for j in range(i - 1, -1, -1):
+                node, ok = trie.track(node, s[j])
+                if ok:
+                    d[i] = min(d[i], d[j])
+        return d[n]
+```
+
+## [2765、最长交替子数组](https://leetcode.cn/problems/longest-alternating-subarray/)
+
+这题咋说呢，也没啥特别的思路，就是逻辑有没有全理到。
+
+略微说坑的点，无非就是一开始题面没完全读懂，一定要是差从1开始的；另外一个就是1和-1来回交替怎么记，自己写的时候是用了一个变量，但看了题解之后发现是可以和长度绑定的。
+
+首先是题解里面的第一种，双层循环的方法，这个就是暴力嘛，把所有的都扫一遍。这个反正肯定能算出来，但是会有子数组被重复计算的情况，算是暴力解法吧。
+
+```python
+class Solution:
+    def alternatingSubarray(self, nums: List[int]) -> int:
+        res = -1
+        n = len(nums)
+        for firstIndex in range(n):
+            for i in range(firstIndex + 1, n):
+                length = i - firstIndex + 1
+                if nums[i] - nums[firstIndex] == (length - 1) % 2:
+                    res = max(res, length)
+                else:
+                    break
+        return res
+
+链接：https://leetcode.cn/problems/longest-alternating-subarray/solutions/2610815/zui-chang-jiao-ti-zi-xu-lie-by-leetcode-2aevc/
+```
+
+其实想到了子数组会重复计算的情况就知道是要解决前一次扫完子数组，下一次外层循环应该从哪里开始继续。自己写的时候反正是写了一团的逻辑。
+
+自己写的：
+
+```python
+class Solution:
+    def alternatingSubarray(self, nums: List[int]) -> int:
+        cond = 1
+        last = 0
+        res = 0
+        for i in range(len(nums) - 1):
+            if nums[i + 1] - nums[i] == cond:
+                cond *= -1 
+                res = max(res, i - last + 2)
+            else:
+                if last != i:
+                    res = max(res, i - last + 1)
+                    if nums[i + 1] - nums[i] == 1:
+                        last = i
+                        cond = -1
+                    else:
+                        last = i + 1
+                        cond = 1
+                else:
+                    last += 1
+        return res if res != 0 else -1
+```
+
+题解：
+
+```python
+class Solution:
+    def alternatingSubarray(self, nums: List[int]) -> int:
+        res = -1
+        firstIndex = 0
+        for i in range(1, len(nums)):
+            length = i - firstIndex + 1
+            if nums[i] - nums[firstIndex] == (length - 1) % 2:
+                res = max(res, length)
+            else:
+                if nums[i] - nums[i - 1] == 1:
+                    firstIndex = i - 1
+                    res = max(res, 2)
+                else:
+                    firstIndex = i
+        return res
+
+链接：https://leetcode.cn/problems/longest-alternating-subarray/solutions/2610815/zui-chang-jiao-ti-zi-xu-lie-by-leetcode-2aevc/
+```
+
+## [2788、按分隔符拆分字符串](https://leetcode.cn/problems/split-strings-by-separator/)
+
+这题没什么逻辑啥的，就是模拟，然后特殊情况其实在示例里也给到了，就是分隔符之间没有字符串的情况
+
+```python
+class Solution:
+    def splitWordsBySeparator(self, words: List[str], separator: str) -> List[str]:
+        result_list = []
+        for word in words:
+            temp_word = ""
+            for character in word:
+                if character != separator:
+                    temp_word += character
+                elif len(temp_word) != 0:
+                    result_list.append(temp_word)
+                    temp_word = ""
+                else:
+                    continue
+            if len(temp_word) != 0:
+                result_list.append(temp_word)
+        return result_list
+```
+
+题解的写法更短...
+
+```python
+class Solution:
+    def splitWordsBySeparator(self, words: List[str], separator: str) -> List[str]:
+        res = []
+        for word in words:
+            res += [sub for sub in word.split(separator) if len(sub)]
+        return res
+
+链接：https://leetcode.cn/problems/split-strings-by-separator/solutions/2595926/an-fen-ge-fu-chai-fen-zi-fu-chuan-by-lee-bti9/
+```
+
+
 
 ## [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/)
 
@@ -8822,3 +9505,20 @@ class Solution {
 17. 剑指offer——面试题41 数据流中的中位数 （思路）
 18. 剑指offer——面试题43 1~n整数中1出现的次数
 19. 剑指offer——面试题44 数字序列中某一位的数字
+
+
+
+
+
+# [leetcode-master](https://github.com/youngyangyang04/leetcode-master)
+
+## 数组
+
+1. 二分查找：
+   - 704-二分查找
+2. 快慢指针：
+   - 27-移除元素
+   - 977-有序数组的平方
+3. 滑动窗口：
+   - 209-长度最小的子数组
+4. 
